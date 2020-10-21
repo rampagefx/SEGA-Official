@@ -36,3 +36,7 @@
 *.png
 *.txt
 *.jpeg
+
+# QT Files
+*.user
+
