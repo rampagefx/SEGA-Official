@@ -39,6 +39,7 @@
 
 # QT Files
 *.user
+build*
 
 # MacOS Files
 .DS_Store
