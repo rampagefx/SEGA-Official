@@ -39,6 +39,8 @@
 
 # QT Files
 *.user
+build*
+*.autosave
 
 # MacOS Files
 .DS_Store
