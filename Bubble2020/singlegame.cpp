@@ -43,3 +43,17 @@ void SingleGame::frame_plus()
     frame++;
     return;
 }
+
+bool SingleGame::isValid(int x, int y)
+{
+    if (x>=0 && x<map_width && y>=0 && y<map_height) return true;
+    else return false;
+}
+
+bool SingleGame::placeBomb(int p, int x, int y)
+{
+    bomb *newBomb = new bomb();
+    newBomb->Set(p, x, y);
+    bombStruct *newStruct = new bombStruct{newBomb, frame};
+
+}

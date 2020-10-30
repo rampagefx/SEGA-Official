@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        Widget.cpp \
         bomb.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -39,7 +38,6 @@ HEADERS += \
         mainwindow.h \
         character.h \
         singlegame.h \
-        Widget.h \
         bomb.h \
         mainwindow.h
 
