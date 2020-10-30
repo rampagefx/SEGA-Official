@@ -40,10 +40,8 @@
 # QT Files
 *.user
 build*
-<<<<<<< HEAD
-=======
 *.autosave
->>>>>>> d625752fc785927b2659b72f342e012fca979268
+*.pro
 
 # MacOS Files
 .DS_Store

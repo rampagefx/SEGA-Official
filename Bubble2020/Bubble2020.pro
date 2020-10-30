@@ -29,16 +29,16 @@ SOURCES += \
         bomb.cpp \
         main.cpp \
         mainwindow.cpp \
-    character.cpp \
-    character.cpp \
-    character.cpp \
-    character.cpp \
-    singlegame.cpp
+        character.cpp \
+        character.cpp \
+        character.cpp \
+        character.cpp \
+        singlegame.cpp
 
 HEADERS += \
         mainwindow.h \
         character.h \
-        singlegame.h
+        singlegame.h \
         Widget.h \
         bomb.h \
         mainwindow.h
