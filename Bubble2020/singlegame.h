@@ -38,4 +38,5 @@ public slots:
     void frame_plus();
 };
 
+
 #endif // SINGLEGAME_H
