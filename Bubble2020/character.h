@@ -2,11 +2,11 @@
 #define CHARACTER_H
 
 #define Player 1
-#define NPC 2
+#define NPC 101
 
 #define moving 1
 #define non_moving 0
-
+class SingleGame;
 class Character
 {
 private:
@@ -29,9 +29,8 @@ public:
     void Set_role(int);
     void Set_locationx(int);
     void Set_locationy(int);
-    virtual void Skill() = 0;
     void Move(int, int**, int, int);
-    void Place_Bomb(int**);
+    virtual void skill(SingleGame*) = 0;
 };
 
 

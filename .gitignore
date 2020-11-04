@@ -41,7 +41,6 @@
 *.user
 build*
 *.autosave
-*.pro
 
 # MacOS Files
 .DS_Store

@@ -1,18 +1,12 @@
-#include "widget.h"
-#include "bomb.h"
-
 #include <QApplication>
-#include <QSpinBox>
-#include <QSlider>
-#include <QHBoxLayout>
-
-
-
-
+#include <QDebug>
+#include "mainwindow.h"
+#include "bombqueue.h"
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    Widget w;
-    w.show();
-    return a.exec();
+//    QApplication a(argc, argv);
+//    MainWindow w;
+//    w.show();
+//    return a.exec();
+    return 0;
 }

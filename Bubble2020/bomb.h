@@ -1,23 +1,19 @@
-#ifndef BLOCK_H
-#define BLOCK_H
+#ifndef BOMB_H
+#define BOMB_H
+
 #define EMPTY    0 //空地
 #define BRICK    1 //可破坏障碍
 #define WALL     2 //不可破坏障碍
 #define BOMB     3 //炸弹
-#define OCCUPIED 4 //有人
-
-
-#include "widget.h"
-
-
-
+#define OCCUPIED 100 //有人
+class SingleGame;
 class bomb
 {
 public:
     bomb();
     void Get();
-    void Set(int p, int x, int y);
-    void explode(int **map, Widget *widget);
+    int Set(int p, int x, int y, int **);
+    void explode(int **map, SingleGame *game);
 private:
     int waitingTime;            //爆炸时间
     int property;               //种类
@@ -25,4 +21,9 @@ private:
     int location_x, location_y; //位置
 };
 
+struct bombStruct{
+    bomb *thebomb;       //指向该炸弹的指针
+    int explodeTime;    //该炸弹爆炸的时间
+    bombStruct *next;
+};
 #endif // BOMB_H

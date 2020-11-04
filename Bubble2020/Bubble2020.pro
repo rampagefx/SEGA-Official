@@ -25,23 +25,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        Widget.cpp \
         bomb.cpp \
         main.cpp \
         mainwindow.cpp \
         character.cpp \
-        character.cpp \
-        character.cpp \
-        character.cpp \
-        singlegame.cpp
+        singlegame.cpp \
+        bombqueue.cpp \
+    pikachu.cpp
 
 HEADERS += \
         mainwindow.h \
         character.h \
         singlegame.h \
-        Widget.h \
         bomb.h \
-        mainwindow.h
+        mainwindow.h \
+        bombqueue.h \
+    pikachu.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
