@@ -31,12 +31,6 @@
 *.out
 *.app
 
-# Other Files
-*.jpg
-*.png
-*.txt
-*.jpeg
-
 # QT Files
 *.user
 build*
