@@ -1,5 +1,6 @@
 #include "startgamemenu.h"
 #include "ui_startgamemenu.h"
+#include "singleplayermenu.h"
 
 StartGameMenu::StartGameMenu(QWidget *parent) :
     QWidget(parent),
@@ -39,16 +40,40 @@ void StartGameMenu::on_pushButtonBackstart_clicked()
     MainWindow::mutualUi->status = 0;
     this->close();
 }
-
 void StartGameMenu::on_pushButtonMulti_clicked()
 {
-    MainWindow::mutualUi->status = 4;
+    //MainWindow::mutualUi->status = 4;
 }
 void StartGameMenu::on_pushButtonSingle_clicked()
 {
     MainWindow::mutualUi->status = 2;
+    SinglePlayerMenu *new_widget = new SinglePlayerMenu(this);
+    new_widget->show();
 }
 void StartGameMenu::on_pushButtonDouble_clicked()
 {
-    MainWindow::mutualUi->status = 3;
+    //MainWindow::mutualUi->status = 3;
+}
+void StartGameMenu::paintEvent(QPaintEvent *event)
+{
+    if (MainWindow::mutualUi->status == 1)
+    {
+        ui->gametitle->setVisible(true);
+        ui->pushButtonMulti->setVisible(true);
+        ui->pushButtonSingle->setVisible(true);
+        ui->pushButtonDouble->setVisible(true);
+        ui->BGMTextstart->setVisible(true);
+        ui->pushButtonBGMstart->setVisible(true);
+        ui->pushButtonBackstart->setVisible(true);
+    }
+    else
+    {
+        ui->gametitle->setVisible(false);
+        ui->pushButtonMulti->setVisible(false);
+        ui->pushButtonSingle->setVisible(false);
+        ui->pushButtonDouble->setVisible(false);
+        ui->BGMTextstart->setVisible(false);
+        ui->pushButtonBGMstart->setVisible(false);
+        ui->pushButtonBackstart->setVisible(false);
+    }
 }

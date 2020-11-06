@@ -33,14 +33,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButtonStart_clicked()
 {
     status = 1;
-    //ui->centralwidget->setVisible(false);
     StartGameMenu *new_widget = new StartGameMenu(this);
     new_widget->show();
 }
 void MainWindow::on_pushButtonHelp_clicked()
 {
     status = 5;
-    //ui->centralwidget->setVisible(false);
     HelpMenu *new_widget = new HelpMenu(this);
     new_widget->show();
 }

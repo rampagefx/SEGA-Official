@@ -20,7 +20,7 @@ private:
     Ui::StartGameMenu *ui;
 
 protected:
-    //void paintEvent(QPaintEvent *event);//绘图事件
+    void paintEvent(QPaintEvent *event);//绘图事件
 
 private slots:
     void on_pushButtonBGMstart_clicked();

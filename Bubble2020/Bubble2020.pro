@@ -33,6 +33,7 @@ SOURCES += \
         singlegame.cpp \
         bombqueue.cpp \
     pikachu.cpp \
+    singleplayermenu.cpp \
     startgamemenu.cpp
 
 HEADERS += \
@@ -44,11 +45,13 @@ HEADERS += \
         mainwindow.h \
         bombqueue.h \
     pikachu.h \
+    singleplayermenu.h \
     startgamemenu.h
 
 FORMS += \
     helpmenu.ui \
     mainwindow.ui \
+    singleplayermenu.ui \
     startgamemenu.ui
 
 # Default rules for deployment.
