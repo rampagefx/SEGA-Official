@@ -26,23 +26,37 @@ CONFIG += c++11
 
 SOURCES += \
         bomb.cpp \
+    helpmenu.cpp \
         main.cpp \
         mainwindow.cpp \
         character.cpp \
         singlegame.cpp \
         bombqueue.cpp \
-    pikachu.cpp
+    pikachu.cpp \
+    singleplayermenu.cpp \
+    startgamemenu.cpp
 
 HEADERS += \
+    helpmenu.h \
         mainwindow.h \
         character.h \
         singlegame.h \
         bomb.h \
         mainwindow.h \
         bombqueue.h \
-    pikachu.h
+    pikachu.h \
+    singleplayermenu.h \
+    startgamemenu.h
+
+FORMS += \
+    helpmenu.ui \
+    mainwindow.ui \
+    singleplayermenu.ui \
+    startgamemenu.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+QT += multimedia
