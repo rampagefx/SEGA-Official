@@ -2,7 +2,7 @@
 bool moveable(int **map, int x, int y, int length, int width) // map[x][y] is moveable or not
 {
     bool is_moveable = true;
-    if (y >= length || x >= width)
+    if (y >= length || x >= width || x < 0 || y < 0)
         return false;
     switch (map[y][x])
     {
@@ -89,6 +89,7 @@ void Character::Move(int direction, int **map, int length, int width)
         if(moveable(map, current_x, current_y-1, length, width))
         {
             map_swap(map, current_x, current_y, current_x, current_y-1);
+            location_y--;
         }
     }
     else if (1==direction)
@@ -96,6 +97,7 @@ void Character::Move(int direction, int **map, int length, int width)
         if(moveable(map, current_x, current_y+1, length, width))
         {
             map_swap(map, current_x, current_y, current_x, current_y+1);
+            location_y++;
         }
     }
     else if (2==direction)
@@ -103,6 +105,7 @@ void Character::Move(int direction, int **map, int length, int width)
         if(moveable(map, current_x-1, current_y, length, width))
         {
             map_swap(map, current_x, current_y, current_x-1, current_y);
+            location_x--;
         }
     }
     else if (3==direction)
@@ -110,6 +113,7 @@ void Character::Move(int direction, int **map, int length, int width)
         if(moveable(map, current_x+1, current_y, length, width))
         {
             map_swap(map, current_x, current_y, current_x+1, current_y);
+            location_x++;
         }
     }
     else

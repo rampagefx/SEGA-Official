@@ -4,7 +4,9 @@
 #include <QWidget>
 #include <QTimer>
 #include <QKeyEvent>
-#include <list>
+#include <QLabel>
+#include <QImage>
+#include <QPoint>
 #include "character.h"
 #include "bomb.h"
 
@@ -12,7 +14,8 @@ const int windows_size_x = 800;
 const int windows_size_y = 800;
 const int map_size_x = 20;
 const int map_size_y = 20;
-
+const int pic_size_x = 35;
+const int pic_size_y = 35;
 class SingleGame : public QWidget
 {
     Q_OBJECT
@@ -21,7 +24,10 @@ private:
     int frame;
     int** map;
     Character *player;
-
+    QLabel *map_pic[map_size_y][map_size_x];
+    QImage map_image[2];
+    QImage character_image;
+    QPoint start_point = QPoint(50, 50);
 public:
     explicit SingleGame(QWidget *parent = nullptr);
     // TODO
