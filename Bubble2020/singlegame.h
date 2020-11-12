@@ -9,6 +9,7 @@
 #include <QPoint>
 #include "character.h"
 #include "bomb.h"
+#include "bombqueue.h"
 
 const int windows_size_x = 800;
 const int windows_size_y = 800;
@@ -27,13 +28,15 @@ private:
     QLabel *map_pic[map_size_y][map_size_x];
     QImage map_image[2];
     QImage character_image;
+    QImage bomb_image;
     QPoint start_point = QPoint(50, 50);
+    BombQueue bomb_queue;
 public:
     explicit SingleGame(QWidget *parent = nullptr);
     // TODO
     bool PlaceBomb(int p, int x, int y);
     bool isValid(int x, int y); // out of map or not
-    int hurtCharacter(int x, int y);
+    int explode();
 protected:
     void paintEvent(QPaintEvent *event);
     void keyPressEvent(QKeyEvent *event);

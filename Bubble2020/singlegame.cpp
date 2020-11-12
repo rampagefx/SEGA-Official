@@ -24,9 +24,10 @@ SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
     player = new Pikachu(1, 101, Player, 10, 10);
     map[player->Get_locationy()][player->Get_locationx()] = player->Get_id();
     // Test img read
-    map_image[0].load("/Users/admin/Desktop/SE/SEGA-Official/files/black.png");
-    map_image[1].load("/Users/admin/Desktop/SE/SEGA-Official/files/white.png");
-    character_image.load("/Users/admin/Desktop/SE/SEGA-Official/files/character.png");
+    map_image[0].load("../../../../img/black.png");
+    map_image[1].load("../../../../img/white.png");
+    character_image.load("../../../../img/character.png");
+    bomb_image.load("../../../../img/bomb.png");
     for (int i = 0; i < map_size_x; i++)
     {
         for (int j = 0; j < map_size_y; j++)
@@ -36,6 +37,13 @@ SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
             {
                 int tmp = (i+j)%2;
                 map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
+                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+                map_pic[j][i] -> setScaledContents(true);
+                map_pic[j][i] -> show();
+            }
+            else if (map[j][i])
+            {
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(bomb_image));
                 map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
                 map_pic[j][i] -> setScaledContents(true);
                 map_pic[j][i] -> show();
@@ -105,15 +113,30 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
     {
         player->Move(1, map, map_size_x, map_size_y);
     }
+    else if (event->key()==Qt::Key_Space)
+    {
+        PlaceBomb(0, player->Get_locationx(), player->Get_locationy());
+    }
 }
 bool SingleGame::PlaceBomb(int p, int x, int y)
 {
-    // TODO
+    // p = property
+    bombStruct *new_bomb = new bombStruct;
+    new_bomb->thebomb = new bomb;
+    new_bomb->explodeTime = new_bomb->thebomb->Set(p, x, y, map);
+    new_bomb->next = nullptr;
+    bomb_queue.push(new_bomb);
     return true;
 }
 void SingleGame::frame_plus()
 {
     frame++;
+    bombStruct* p = bomb_queue.Gethead();
+    while (p->next != nullptr && p->explodeTime>=frame){
+        p = p->next;
+        explode();
+    }
+
     return;
 }
 
@@ -125,8 +148,26 @@ bool SingleGame::isValid(int x, int y)
         return false;
 }
 
-int SingleGame::hurtCharacter(int x, int y)
+int SingleGame::explode()
 {
     //TODO
+    if (bomb_queue.GetHeadTime()>=frame){
+        bomb* theBomb = bomb_queue.pop()->thebomb;
+        int dx[4] = {-1,0,1,0};
+        int dy[4] = {0,-1,0,1};
+        for (int i=0;i<4;i++){
+            if (isValid(dx[i]+theBomb->GetX(),dy[i]+theBomb->GetY())){
+                int x = dx[i]+theBomb->GetX();
+                int y = dy[i]+theBomb->GetY();
+                if (map[y][x] == BRICK)
+                    map[y][x] = EMPTY;
+                if (player->Get_locationx()==x && player->Get_locationy()==y){
+                    player->Set_HP(player->Get_HP()-1);
+                }
+
+            }
+        }
+
+    }
     return 1;
 }

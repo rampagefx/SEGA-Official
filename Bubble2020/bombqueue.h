@@ -12,6 +12,7 @@ public:
     bool push(bombStruct*);
     bombStruct* pop();
     int GetHeadTime();
+    bombStruct* Gethead();
 };
 
 #endif // BOMBQUEUE_H

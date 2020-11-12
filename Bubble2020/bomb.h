@@ -11,9 +11,9 @@ class bomb
 {
 public:
     bomb();
-    void Get();
+    int GetX();
+    int GetY();
     int Set(int p, int x, int y, int **);
-    void explode(int **map, SingleGame *game);
 private:
     int waitingTime;            //爆炸时间
     int property;               //种类
