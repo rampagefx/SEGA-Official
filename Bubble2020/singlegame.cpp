@@ -6,8 +6,10 @@
 
 SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
 {
+    this->setAttribute(Qt::WA_DeleteOnClose);
     frame = 0;
-    this -> resize(windows_size_x, windows_size_y);
+    GameStatus = 0;
+    resize(windows_size_x, windows_size_y);
     map = new int*[map_size_y];
     // Test map
     for (int i = 0; i < map_size_x; ++i)
@@ -22,45 +24,39 @@ SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
 
     // Test character
     player = new Pikachu(1, 101, Player, 10, 10);
-    map[player->Get_locationy()][player->Get_locationx()] = player->Get_id();
+    map[15][15] = BRICK;
+    map[19][19] = OUT;
     // Test img read
-    map_image[0].load("/Users/admin/Desktop/SE/SEGA-Official/files/black.png");
-    map_image[1].load("/Users/admin/Desktop/SE/SEGA-Official/files/white.png");
-    character_image.load("/Users/admin/Desktop/SE/SEGA-Official/files/character.png");
+    map_image[0].load("../../../../img/white.png");
+    map_image[1].load("../../../../img/bomb.png");
+    character_image.load("../../../../img/character.png");
+    bomb_image.load("../../../../img/black.png");
     for (int i = 0; i < map_size_x; i++)
     {
         for (int j = 0; j < map_size_y; j++)
         {
             map_pic[j][i] = new QLabel(this);
-            if (map[j][i] == 0)
-            {
-                int tmp = (i+j)%2;
-                map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
-                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
-                map_pic[j][i] -> setScaledContents(true);
-                map_pic[j][i] -> show();
-            }
-            else {
-                map_pic[j][i] -> setPixmap(QPixmap::fromImage(character_image));
-                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
-                map_pic[j][i] -> setScaledContents(true);
-                map_pic[j][i] -> show();
-            }
+            map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[0]));
+            map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+            map_pic[j][i] -> setScaledContents(true);
+            map_pic[j][i] -> show();
         }
     }
     // Test img end
-    this -> grabKeyboard();
+    qDebug() << '\0';
+    grabKeyboard();
     QKeyEvent *ev;
     keyPressEvent(ev);
     timer = new QTimer;
     connect(timer, SIGNAL(timeout()), this, SLOT(repaint()));
     connect(timer,SIGNAL(timeout()), this, SLOT(frame_plus()));
     timer->start(50);
-
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void SingleGame::paintEvent(QPaintEvent *event)
 {
+    //qDebug() << "paint";
     QPainter painter;
     for (int i = 0; i < map_size_x; i++)
     {
@@ -68,8 +64,23 @@ void SingleGame::paintEvent(QPaintEvent *event)
         {
             if (map[j][i] == 0)
             {
-                int tmp = (i+j)%2;
+                int tmp = 0;
                 map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
+                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+                map_pic[j][i] -> setScaledContents(true);
+                map_pic[j][i] -> show();
+            }
+            else if (map[j][i]==BRICK)
+            {
+                int tmp = 1;
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
+                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+                map_pic[j][i] -> setScaledContents(true);
+                map_pic[j][i] -> show();
+            }
+            else if (map[j][i]==BOMB)
+            {
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(bomb_image));
                 map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
                 map_pic[j][i] -> setScaledContents(true);
                 map_pic[j][i] -> show();
@@ -82,6 +93,14 @@ void SingleGame::paintEvent(QPaintEvent *event)
             }
         }
     }
+    int j = player->Get_locationy();
+    int i = player->Get_locationx();
+    map_pic[j][i] -> setPixmap(QPixmap::fromImage(character_image));
+    map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+    map_pic[j][i] -> setScaledContents(true);
+    map_pic[j][i] -> show();
+    if (map[j][i] == OUT)
+            qDebug() << "end";
     qDebug() << player->Get_locationx() << ' ' << player->Get_locationy() << '\n';
     // TODO
 }
@@ -105,10 +124,24 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
     {
         player->Move(1, map, map_size_x, map_size_y);
     }
+    else if (event->key()==Qt::Key_Space)
+    {
+        PlaceBomb(0, player->Get_locationx(), player->Get_locationy());
+    }
 }
 bool SingleGame::PlaceBomb(int p, int x, int y)
 {
-    // TODO
+    // p = property
+    if (map[y][x] == BOMB)
+    {
+        // qDebug() << "????????";
+        return false;
+    }
+    bombStruct *new_bomb = new bombStruct;
+    new_bomb->thebomb = new bomb;
+    new_bomb->explodeTime = new_bomb->thebomb->Set(p, x, y, map);
+    new_bomb->next = nullptr;
+    bomb_queue.push(new_bomb);
     return true;
 }
 void SingleGame::frame_plus()
@@ -129,4 +162,9 @@ int SingleGame::hurtCharacter(int x, int y)
 {
     //TODO
     return 1;
+}
+
+void SingleGame::MapLoad()
+{
+
 }

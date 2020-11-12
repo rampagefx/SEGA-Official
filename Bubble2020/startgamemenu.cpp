@@ -11,6 +11,7 @@ StartGameMenu::StartGameMenu(QWidget *parent) :
         ui->pushButtonBGMstart->setText("ON");
     else
         ui->pushButtonBGMstart->setText("OFF");
+    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 StartGameMenu::~StartGameMenu()

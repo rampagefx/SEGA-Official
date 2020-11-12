@@ -1,6 +1,7 @@
 #include "singleplayermenu.h"
 #include "ui_singleplayermenu.h"
-
+#include "singlegame.h"
+#include <QDebug>
 SinglePlayerMenu::SinglePlayerMenu(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SinglePlayerMenu)
@@ -13,6 +14,7 @@ SinglePlayerMenu::SinglePlayerMenu(QWidget *parent) :
     ui->textCharacter1->setVisible(false);
     ui->pushButtonDecide->setVisible(false);
     ui->pushButtonNotDecide->setVisible(false);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 SinglePlayerMenu::~SinglePlayerMenu()
@@ -48,12 +50,19 @@ void SinglePlayerMenu::on_pushButtonNotDecide_clicked()
     ui->pushButtonNotDecide->setVisible(false);
     ui->pushButtonCharacter2->setVisible(true);
     ui->pushButtonCharacter3->setVisible(true);
+    repaint();
 }
 void SinglePlayerMenu::on_pushButtonDecide_clicked()
 {
     //代表选择人物 1
     if (ui->textCharacter1->isVisible())
+    {
         int character_choose = 1;
+        SingleGame *newgame = new SingleGame;
+        newgame->show();
+
+    }
+
         //TODO:
 }
 void SinglePlayerMenu::on_pushButtonCharacter1_clicked()
@@ -63,6 +72,7 @@ void SinglePlayerMenu::on_pushButtonCharacter1_clicked()
     ui->pushButtonNotDecide->setVisible(true);
     ui->pushButtonCharacter2->setVisible(false);
     ui->pushButtonCharacter3->setVisible(false);
+    repaint();
 }
 void SinglePlayerMenu::on_pushButtonCharacter2_clicked()
 {

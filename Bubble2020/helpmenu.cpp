@@ -13,6 +13,7 @@ HelpMenu::HelpMenu(QWidget *parent) :
     ui->pushButtonreturn->setVisible(false);
     ui->IntroText->setVisible(false);
     ui->BackgroundText->setVisible(false);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 HelpMenu::~HelpMenu()
@@ -47,6 +48,7 @@ void HelpMenu::on_pushButtonItem_clicked()
     ui->pushButtonCharacter->setVisible(false);
     ui->pushButtonIntro->setVisible(false);
     ui->pushButtonBackground->setVisible(false);
+    repaint();
 }
 void HelpMenu::on_pushButtonBackground_clicked()
 {
@@ -55,6 +57,7 @@ void HelpMenu::on_pushButtonBackground_clicked()
     ui->pushButtonIntro->setVisible(false);
     ui->pushButtonItem->setVisible(false);
     ui->BackgroundText->setVisible(true);
+    repaint();
 }
 void HelpMenu::on_pushButtonIntro_clicked()
 {
@@ -63,6 +66,7 @@ void HelpMenu::on_pushButtonIntro_clicked()
     ui->pushButtonItem->setVisible(false);
     ui->pushButtonBackground->setVisible(false);
     ui->IntroText->setVisible(true);
+    repaint();
 }
 void HelpMenu::on_pushButtonCharacter_clicked()
 {
@@ -70,6 +74,7 @@ void HelpMenu::on_pushButtonCharacter_clicked()
     ui->pushButtonItem->setVisible(false);
     ui->pushButtonIntro->setVisible(false);
     ui->pushButtonBackground->setVisible(false);
+    repaint();
 }
 void HelpMenu::on_pushButtonreturn_clicked()
 {
@@ -80,4 +85,5 @@ void HelpMenu::on_pushButtonreturn_clicked()
     ui->pushButtonBackground->setVisible(true);
     ui->IntroText->setVisible(false);
     ui->BackgroundText->setVisible(false);
+    repaint();
 }

@@ -9,6 +9,7 @@
 #include <QPoint>
 #include "character.h"
 #include "bomb.h"
+#include "bombqueue.h"
 
 const int windows_size_x = 800;
 const int windows_size_y = 800;
@@ -23,11 +24,14 @@ private:
     QTimer *timer;
     int frame;
     int** map;
+    int GameStatus;
     Character *player;
     QLabel *map_pic[map_size_y][map_size_x];
     QImage map_image[2];
     QImage character_image;
+    QImage bomb_image;
     QPoint start_point = QPoint(50, 50);
+    BombQueue bomb_queue;
 public:
     explicit SingleGame(QWidget *parent = nullptr);
     // TODO
@@ -37,6 +41,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *event);
     void keyPressEvent(QKeyEvent *event);
+    void MapLoad();
 
 signals:
 

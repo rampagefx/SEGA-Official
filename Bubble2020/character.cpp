@@ -88,7 +88,7 @@ void Character::Move(int direction, int **map, int length, int width)
     {
         if(moveable(map, current_x, current_y-1, length, width))
         {
-            map_swap(map, current_x, current_y, current_x, current_y-1);
+            //map_swap(map, current_x, current_y, current_x, current_y-1);
             location_y--;
         }
     }
@@ -96,7 +96,7 @@ void Character::Move(int direction, int **map, int length, int width)
     {
         if(moveable(map, current_x, current_y+1, length, width))
         {
-            map_swap(map, current_x, current_y, current_x, current_y+1);
+            //map_swap(map, current_x, current_y, current_x, current_y+1);
             location_y++;
         }
     }
@@ -104,7 +104,7 @@ void Character::Move(int direction, int **map, int length, int width)
     {
         if(moveable(map, current_x-1, current_y, length, width))
         {
-            map_swap(map, current_x, current_y, current_x-1, current_y);
+            //map_swap(map, current_x, current_y, current_x-1, current_y);
             location_x--;
         }
     }
@@ -112,7 +112,7 @@ void Character::Move(int direction, int **map, int length, int width)
     {
         if(moveable(map, current_x+1, current_y, length, width))
         {
-            map_swap(map, current_x, current_y, current_x+1, current_y);
+            //map_swap(map, current_x, current_y, current_x+1, current_y);
             location_x++;
         }
     }
