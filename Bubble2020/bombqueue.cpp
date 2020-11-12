@@ -73,3 +73,7 @@ int BombQueue::GetHeadTime()
         return -1;
     return head -> explodeTime;
 }
+
+bombStruct* BombQueue::Gethead(){
+    return head;
+}

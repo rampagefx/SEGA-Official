@@ -37,7 +37,7 @@ public:
     // TODO
     bool PlaceBomb(int p, int x, int y);
     bool isValid(int x, int y); // out of map or not
-    int hurtCharacter(int x, int y);
+    int explode();
 protected:
     void paintEvent(QPaintEvent *event);
     void keyPressEvent(QKeyEvent *event);

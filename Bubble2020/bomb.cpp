@@ -4,8 +4,12 @@ bomb::bomb(){
 
 }
 
-void bomb::Get(){
+int bomb::GetY(){
+    return location_y;
+}
 
+int bomb::GetX(){
+    return location_x;
 }
 
 int bomb::Set(int p, int x, int y, int **map){
@@ -28,20 +32,3 @@ int bomb::Set(int p, int x, int y, int **map){
    return waitingTime;
 }
 
-void bomb::explode(int **map, SingleGame *game){
-    switch (damage){
-    case 1:
-        int dx[4] = {0,1,0,-1};
-        int dy[4] = {-1,0,1,0};
-        for (int i=0;i<4;i++){
-            if (game->isValid(location_x+dx[i],location_y+dy[i])){
-                int x = location_x+dx[i], y = location_y+dy[i];
-                if (map[y][x]==BRICK) map[y][x] = EMPTY;
-                else if (map[y][x]>=OCCUPIED){
-                    game->hurtCharacter(map[y][x], damage);
-                }
-            }
-        }
-        break;
-    }
-}

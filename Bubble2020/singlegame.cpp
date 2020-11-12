@@ -147,6 +147,12 @@ bool SingleGame::PlaceBomb(int p, int x, int y)
 void SingleGame::frame_plus()
 {
     frame++;
+    bombStruct* p = bomb_queue.Gethead();
+    while (p->next != nullptr && p->explodeTime>=frame){
+        p = p->next;
+        explode();
+    }
+
     return;
 }
 
@@ -158,9 +164,27 @@ bool SingleGame::isValid(int x, int y)
         return false;
 }
 
-int SingleGame::hurtCharacter(int x, int y)
+int SingleGame::explode()
 {
     //TODO
+    if (bomb_queue.GetHeadTime()>=frame){
+        bomb* theBomb = bomb_queue.pop()->thebomb;
+        int dx[4] = {-1,0,1,0};
+        int dy[4] = {0,-1,0,1};
+        for (int i=0;i<4;i++){
+            if (isValid(dx[i]+theBomb->GetX(),dy[i]+theBomb->GetY())){
+                int x = dx[i]+theBomb->GetX();
+                int y = dy[i]+theBomb->GetY();
+                if (map[y][x] == BRICK)
+                    map[y][x] = EMPTY;
+                if (player->Get_locationx()==x && player->Get_locationy()==y){
+                    player->Set_HP(player->Get_HP()-1);
+                }
+
+            }
+        }
+
+    }
     return 1;
 }
 
