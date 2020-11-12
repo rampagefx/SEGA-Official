@@ -1,6 +1,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QDebug>
+#include <cstdio>
 #include "singlegame.h"
 #include "pikachu.h"
 
@@ -50,7 +51,7 @@ SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
     timer = new QTimer;
     connect(timer, SIGNAL(timeout()), this, SLOT(repaint()));
     connect(timer,SIGNAL(timeout()), this, SLOT(frame_plus()));
-    timer->start(50);
+    timer->start(1);
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -93,6 +94,7 @@ void SingleGame::paintEvent(QPaintEvent *event)
             }
         }
     }
+    //explode();
     int j = player->Get_locationy();
     int i = player->Get_locationx();
     map_pic[j][i] -> setPixmap(QPixmap::fromImage(character_image));
@@ -101,7 +103,7 @@ void SingleGame::paintEvent(QPaintEvent *event)
     map_pic[j][i] -> show();
     if (map[j][i] == OUT)
             qDebug() << "end";
-    qDebug() << player->Get_locationx() << ' ' << player->Get_locationy() << '\n';
+//    qDebug() << player->Get_locationx() << ' ' << player->Get_locationy() << '\n';
     // TODO
 }
 
@@ -139,7 +141,7 @@ bool SingleGame::PlaceBomb(int p, int x, int y)
     }
     bombStruct *new_bomb = new bombStruct;
     new_bomb->thebomb = new bomb;
-    new_bomb->explodeTime = new_bomb->thebomb->Set(p, x, y, map);
+    new_bomb->explodeTime = new_bomb->thebomb->Set(p, x, y, map) + frame;
     new_bomb->next = nullptr;
     bomb_queue.push(new_bomb);
     return true;
@@ -147,12 +149,10 @@ bool SingleGame::PlaceBomb(int p, int x, int y)
 void SingleGame::frame_plus()
 {
     frame++;
-    bombStruct* p = bomb_queue.Gethead();
-    while (p->next != nullptr && p->explodeTime>=frame){
-        p = p->next;
+//    qDebug() << frame;
+    //std::printf("%d\n", frame);
+    while (bomb_queue.GetHeadTime()<=frame)
         explode();
-    }
-
     return;
 }
 
@@ -167,7 +167,8 @@ bool SingleGame::isValid(int x, int y)
 int SingleGame::explode()
 {
     //TODO
-    if (bomb_queue.GetHeadTime()>=frame){
+    qDebug() << "Explosion";
+    while (bomb_queue.GetHeadTime()<=frame){
         bomb* theBomb = bomb_queue.pop()->thebomb;
         int dx[4] = {-1,0,1,0};
         int dy[4] = {0,-1,0,1};
@@ -183,6 +184,7 @@ int SingleGame::explode()
 
             }
         }
+        map[theBomb->GetY()][theBomb->GetX()] = EMPTY;
 
     }
     return 1;

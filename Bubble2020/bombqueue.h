@@ -6,8 +6,8 @@ class BombQueue
 {
 private:
     bombStruct *head;
-    int len;
 public:
+    int len;
     BombQueue();
     bool push(bombStruct*);
     bombStruct* pop();

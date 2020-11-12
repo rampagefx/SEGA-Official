@@ -19,11 +19,11 @@ int bomb::Set(int p, int x, int y, int **map){
    map[y][x] = BOMB;
    switch (property) {        //根据属性设置
    case 0:                    //普通炸弹
-       waitingTime = 10;
+       waitingTime = 50;
        damage = 1;
        break;
    case 1:
-       waitingTime = 20;
+       waitingTime = 100;
        damage = 1;
        break;
    default:

@@ -70,7 +70,7 @@ bombStruct* BombQueue::pop()
 int BombQueue::GetHeadTime()
 {
     if (len == 0)
-        return -1;
+        return 3e8;
     return head -> explodeTime;
 }
 
