@@ -44,7 +44,6 @@ SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
         }
     }
     // Test img end
-    qDebug() << '\0';
     grabKeyboard();
     QKeyEvent *ev;
     keyPressEvent(ev);
@@ -144,6 +143,7 @@ bool SingleGame::PlaceBomb(int p, int x, int y)
     new_bomb->explodeTime = new_bomb->thebomb->Set(p, x, y, map) + frame;
     new_bomb->next = nullptr;
     bomb_queue.push(new_bomb);
+    qDebug() << "Add Bomb" << new_bomb->explodeTime << '\n' << bomb_queue.len;
     return true;
 }
 void SingleGame::frame_plus()
@@ -168,7 +168,7 @@ int SingleGame::explode()
 {
     //TODO
     qDebug() << "Explosion";
-    while (bomb_queue.GetHeadTime()<=frame){
+     while (bomb_queue.GetHeadTime()<=frame){
         bomb* theBomb = bomb_queue.pop()->thebomb;
         int dx[4] = {-1,0,1,0};
         int dy[4] = {0,-1,0,1};
