@@ -39,7 +39,7 @@ bool BombQueue::push(bombStruct *in)
     else
     {
         bombStruct *temp = head;
-        while (temp -> next != nullptr)
+        while (temp != nullptr)
         {
             if (temp -> next != nullptr && in -> explodeTime > temp -> next ->explodeTime)
                 // Next node is not null and needs less time to explode
