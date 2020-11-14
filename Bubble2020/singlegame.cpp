@@ -23,6 +23,9 @@ SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
 
     // Test map end
 
+   MapLoad();
+
+
     // Test character
     player = new Pikachu(1, 101, Player, 10, 10);
     map[15][15] = BRICK;
@@ -192,5 +195,21 @@ int SingleGame::explode()
 
 void SingleGame::MapLoad()
 {
+    QFile file("../../../../map.txt");
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug()<<"Can't open the file!"<<endl;
+    }
+    file.seek(0);
+    QTextStream mapdata(&file);
+    int i=0;
+    while (!mapdata.atEnd()){
+        QString line = mapdata.readLine();
+        QStringList strlist = line.split(" ");
+        for (int j=0;j<20;j++){
+            map[i][j] = strlist[j].toInt();
+        }
+        i++;
+    }
 
 }
