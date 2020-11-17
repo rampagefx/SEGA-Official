@@ -1,11 +1,17 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QDebug>
-#include <cstdio>
+#include <cstdlib>
+#include <ctime>
 #include "singlegame.h"
 #include "pikachu.h"
+#include "npc.h"
 
-SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
+using namespace std;
+#define PLAYING 0
+#define DEAD 1
+#define PASS 2
+SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
 {
     this->setAttribute(Qt::WA_DeleteOnClose);
     frame = 0;
@@ -23,18 +29,19 @@ SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
 
     // Test map end
 
-   MapLoad();
-
-
-    // Test character
-    player = new Pikachu(1, 101, Player, 10, 10);
-    map[15][15] = BRICK;
-    map[19][19] = OUT;
+    MapLoad();
+    switch (player_id)
+    {
+    case 0: player = new Pikachu(1, 101, 1, 10, 10);
+    //default: this->close();
+    }
     // Test img read
     map_image[0].load("../../../../img/white.png");
     map_image[1].load("../../../../img/bomb.png");
     character_image.load("../../../../img/character.png");
     bomb_image.load("../../../../img/black.png");
+    enemy_image.load("../../../../img/npc.png");
+    int count = 0;
     for (int i = 0; i < map_size_x; i++)
     {
         for (int j = 0; j < map_size_y; j++)
@@ -44,6 +51,12 @@ SingleGame::SingleGame(QWidget *parent) : QWidget(parent)
             map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
             map_pic[j][i] -> setScaledContents(true);
             map_pic[j][i] -> show();
+            if (map[j][i] == 9 && count < enemy_num)
+            {
+                enemys[count] = new npc(1, count, NPC, i, j);
+                map[j][i] = 0;
+                count++;
+            }
         }
     }
     // Test img end
@@ -88,11 +101,9 @@ void SingleGame::paintEvent(QPaintEvent *event)
                 map_pic[j][i] -> setScaledContents(true);
                 map_pic[j][i] -> show();
             }
-            else {
-                map_pic[j][i] -> setPixmap(QPixmap::fromImage(character_image));
-                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
-                map_pic[j][i] -> setScaledContents(true);
-                map_pic[j][i] -> show();
+            else
+            {
+
             }
         }
     }
@@ -103,8 +114,21 @@ void SingleGame::paintEvent(QPaintEvent *event)
     map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
     map_pic[j][i] -> setScaledContents(true);
     map_pic[j][i] -> show();
+    for (int k = 0;k < enemy_num; k++)
+    {
+        if (enemys[k]->Get_HP()<=0) continue;
+        int j = enemys[k]->Get_locationy();
+        int i = enemys[k]->Get_locationx();
+        map_pic[j][i] -> setPixmap(QPixmap::fromImage(enemy_image));
+        map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+        map_pic[j][i] -> setScaledContents(true);
+        map_pic[j][i] -> show();
+    }
     if (map[j][i] == OUT)
-            qDebug() << "end";
+    {
+        GameStatus = PASS;
+        this->GamePass();
+    }
 //    qDebug() << player->Get_locationx() << ' ' << player->Get_locationy() << '\n';
     // TODO
 }
@@ -156,6 +180,20 @@ void SingleGame::frame_plus()
     //std::printf("%d\n", frame);
     while (bomb_queue.GetHeadTime()<=frame)
         explode();
+    if (frame % 2 == 0)
+        for (int i=0;i<5;i++)
+            if (enemys[i]->Get_HP()>0){
+                enemys[i]->automove(map);
+
+            }
+    if (frame % 10 == 0)
+        for (int i=0;i<5;i++)
+            if (enemys[i]->Get_HP()>0){
+                // enemys[i]->automove(map);
+                qsrand(time(0)+i);
+                if (qrand() % 100 > 90)
+                    PlaceBomb(0, enemys[i]->Get_locationx(), enemys[i]->Get_locationy());
+            }
     return;
 }
 
@@ -183,8 +221,16 @@ int SingleGame::explode()
                     map[y][x] = EMPTY;
                 if (player->Get_locationx()==x && player->Get_locationy()==y){
                     player->Set_HP(player->Get_HP()-1);
+                    if (player->Get_HP() <= 0)
+                        GameOver();
                 }
-
+                for (int j=0;j<5;j++){
+                    if (enemys[j]->Get_locationx()==x && enemys[j]->Get_locationy()==y){
+                        enemys[j]->Set_HP(enemys[j]->Get_HP()-1);
+                        if (enemys[j]->Get_HP() <= 0)
+                            map[y][x] = 0;
+                    }
+                }
             }
         }
         map[theBomb->GetY()][theBomb->GetX()] = EMPTY;

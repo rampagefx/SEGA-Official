@@ -8,6 +8,8 @@ bool moveable(int **map, int x, int y, int length, int width) // map[x][y] is mo
     {
     case 1:is_moveable = false;break;
     case 2:is_moveable = false;break;
+    case 3:is_moveable = false;break;
+    case 100:is_moveable = false;break;
     }
     return is_moveable;
 }
@@ -84,6 +86,8 @@ void Character::Move(int direction, int **map, int length, int width)
     // 0 for up, 1 for down, 2 for left, 3 for right
     int current_x = location_x;
     int current_y = location_y;
+    if (map[current_y][current_x]!=3)
+        map[current_y][current_x] = 0;
     if (0==direction)
     {
         if(moveable(map, current_x, current_y-1, length, width))
@@ -120,4 +124,5 @@ void Character::Move(int direction, int **map, int length, int width)
     {
         throw "Wrong Direction input for character moving!";
     }
+    map[location_y][location_x] = 100;
 }

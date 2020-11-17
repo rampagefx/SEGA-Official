@@ -30,6 +30,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         character.cpp \
+    npc.cpp \
         singlegame.cpp \
         bombqueue.cpp \
     pikachu.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     helpmenu.h \
         mainwindow.h \
         character.h \
+    npc.h \
         singlegame.h \
         bomb.h \
         mainwindow.h \
