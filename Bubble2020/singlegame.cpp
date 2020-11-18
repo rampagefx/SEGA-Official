@@ -156,6 +156,10 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
     {
         PlaceBomb(0, player->Get_locationx(), player->Get_locationy());
     }
+    else if (event->key()==Qt::Key_Q)
+    {
+        player->skill();
+    }
 }
 bool SingleGame::PlaceBomb(int p, int x, int y)
 {
@@ -170,7 +174,7 @@ bool SingleGame::PlaceBomb(int p, int x, int y)
     new_bomb->explodeTime = new_bomb->thebomb->Set(p, x, y, map) + frame;
     new_bomb->next = nullptr;
     bomb_queue.push(new_bomb);
-    qDebug() << "Add Bomb" << new_bomb->explodeTime << '\n' << bomb_queue.len;
+    //qDebug() << "Add Bomb" << new_bomb->explodeTime << '\n' << bomb_queue.len;
     return true;
 }
 void SingleGame::frame_plus()
@@ -208,8 +212,7 @@ bool SingleGame::isValid(int x, int y)
 int SingleGame::explode()
 {
     //TODO
-    qDebug() << "Explosion";
-     while (bomb_queue.GetHeadTime()<=frame){
+    while (bomb_queue.GetHeadTime()<=frame){
         bomb* theBomb = bomb_queue.pop()->thebomb;
         int dx[4] = {-1,0,1,0};
         int dy[4] = {0,-1,0,1};
@@ -234,7 +237,6 @@ int SingleGame::explode()
             }
         }
         map[theBomb->GetY()][theBomb->GetX()] = EMPTY;
-
     }
     return 1;
 }

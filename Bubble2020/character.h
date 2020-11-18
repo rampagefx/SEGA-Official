@@ -30,7 +30,7 @@ public:
     void Set_locationx(int);
     void Set_locationy(int);
     void Move(int, int**, int, int);
-    virtual void skill(SingleGame*) = 0;
+    virtual void skill() = 0;
 };
 
 

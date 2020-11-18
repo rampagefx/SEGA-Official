@@ -7,7 +7,7 @@ class Pikachu:public Character
 {
 public:
     Pikachu(int, int ,int, int ,int);
-    void skill(SingleGame *);
+    void skill();
 };
 
 #endif // PIKACHU_H

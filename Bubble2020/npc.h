@@ -7,7 +7,7 @@ class npc:public Character{
 public:
     npc(int, int, int, int, int);
     void automove(int ** map);
-    void skill(SingleGame *);
+    void skill();
 };
 
 #endif // NPC_H

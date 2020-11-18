@@ -16,7 +16,7 @@ void npc::automove(int** map){
     //qDebug() << map[Get_locationy()][Get_locationx()-1] << map[Get_locationy()-1][Get_locationx()] << map[Get_locationy()+1][Get_locationx()] << map[Get_locationy()][Get_locationx()+1];
 }
 
-void npc::skill(SingleGame *){
+void npc::skill(){
 
 }
 
