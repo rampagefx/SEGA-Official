@@ -9,5 +9,6 @@ Pikachu::Pikachu(int HP_in, int id_in, int role_in, int location_x_in, int locat
 void Pikachu::skill()
 {
     Set_HP(Get_HP()+1);
+
     return;
 }

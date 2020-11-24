@@ -108,6 +108,7 @@ void SingleGame::paintEvent(QPaintEvent *event)
         }
     }
     //explode();
+    // 绘制人物
     int j = player->Get_locationy();
     int i = player->Get_locationx();
     map_pic[j][i] -> setPixmap(QPixmap::fromImage(character_image));
@@ -158,7 +159,11 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
     }
     else if (event->key()==Qt::Key_Q)
     {
-        player->skill();
+        if (player->CD_time < frame)
+        {
+            player->skill();
+            player->CD_time = frame + 1000;
+        }
     }
 }
 bool SingleGame::PlaceBomb(int p, int x, int y)
@@ -243,7 +248,11 @@ int SingleGame::explode()
 
 void SingleGame::MapLoad()
 {
+#ifdef _WIN64
     QFile file("../../../../map.txt");
+#elif __APPLE__
+    QFile file("../../../../map.txt");
+#endif
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug()<<"Can't open the file!"<<endl;
