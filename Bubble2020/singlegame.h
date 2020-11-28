@@ -8,6 +8,8 @@
 #include <QImage>
 #include <QPoint>
 #include <QLCDNumber>
+#include <QProgressBar>
+#include <QPushButton>
 #include "character.h"
 #include "bomb.h"
 #include "bombqueue.h"
@@ -37,12 +39,14 @@ private:
     QLabel *map_pic[map_size_y][map_size_x];
     QLabel *LabelPicturePause;
     QLabel *character_pic, *character_name;
-    QImage map_image[5];
+    QImage map_image[6];
     QImage character_image;
     QImage enemy_image;
 //    QImage bomb_image;
+    QPushButton *next_level;
     QPoint start_point = QPoint(50, 50);
     QLCDNumber *CD_show;
+    QProgressBar *CD_display;
     BombQueue bomb_queue;
 public:
     explicit SingleGame(int, QWidget *parent = nullptr);
@@ -62,6 +66,7 @@ signals:
 
 public slots:
     void frame_plus();
+    void next_game();
 };
 
 

@@ -21,7 +21,7 @@ public:
     QString pic_path;
     Character(int, int ,int, int ,int);
     virtual ~Character();
-    int CD_time = 1000;
+    int CD_time = 200;
     int Get_HP();
     int Get_id();
     int Get_role();

@@ -1,7 +1,9 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QDebug>
-#include <QPushButton>
+#include <QPixmap>
+#include <QIcon>
+#include <QSize>
 #include <cstdlib>
 #include <ctime>
 #include "singlegame.h"
@@ -13,6 +15,7 @@ using namespace std;
 #define PLAYING 0
 #define DEAD 1
 #define PASS 2
+const int CD = 500;
 SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
 {
     this->setAttribute(Qt::WA_DeleteOnClose);
@@ -34,7 +37,7 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     //default: this->close();
     }
     // Test img read
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 6; i++)
         map_image[i].load(map_image_path[i]);
     character_image.load(player->pic_path);
 //    bomb_image.load(map_image_path[3]);
@@ -58,16 +61,14 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
             }
         }
     }
-    // Test img end
     grabKeyboard();
     QKeyEvent *ev;
     keyPressEvent(ev);
-    CD_show = new QLCDNumber(this);
-    CD_show->setGeometry(600, 600, 100, 50);
-    // 设置能显示的位数
-    CD_show->setDigitCount(3);
-    // 设置显示的模式为十进制
-    CD_show->setMode(QLCDNumber::Dec);
+    CD_display = new QProgressBar(this);
+    CD_display->setMaximum(CD);
+    CD_display->setGeometry(600, 600, 100, 50);
+    CD_display->setValue(CD);
+    CD_display->show();
     timer = new QTimer;
     connect(timer, SIGNAL(timeout()), this, SLOT(repaint()));
     connect(timer,SIGNAL(timeout()), this, SLOT(frame_plus()));
@@ -123,6 +124,14 @@ void SingleGame::paintEvent(QPaintEvent *event)
                 map_pic[j][i] -> setScaledContents(true);
                 map_pic[j][i] -> show();
             }
+            else if (map[j][i]==EXPLODING)
+            {
+                int tmp = 5;
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
+                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+                map_pic[j][i] -> setScaledContents(true);
+                map_pic[j][i] -> show();
+            }
             else
             {
 
@@ -150,18 +159,24 @@ void SingleGame::paintEvent(QPaintEvent *event)
     if (map[j][i] == OUT)
     {
         GameStatus = PASS;
+        timer->stop();
         QImage imaWin;
         imaWin.load(win_pic_path);
         imaWin.scaled(200,100,Qt::KeepAspectRatio);
         LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
-        LabelPicturePause->setGeometry(400,200,200,100);
+        LabelPicturePause->setGeometry(150,000,500,342);
         LabelPicturePause->setScaledContents(true);
+        LabelPicturePause->raise();
         LabelPicturePause->show();
-        QPushButton *next_level = new QPushButton(this);
-        next_level->setGeometry(700,700,75,50);
-        timer->stop();
+        QPixmap button_img(button_pic_path);
+        next_level = new QPushButton(this);
+        next_level->setGeometry(200, 300, 400, 300);
+        next_level->setIcon(QIcon(button_img));
+        next_level->setIconSize(QSize(400, 300));
+        next_level->setStyleSheet("border:none");
+        next_level->show();
+        connect(next_level, SIGNAL(clicked()), this, SLOT(close()));
     }
-//    qDebug() << player->Get_locationx() << ' ' << player->Get_locationy() << '\n';
     // TODO
 }
 
@@ -193,7 +208,7 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
         if (player->CD_time < frame)
         {
             player->skill();
-            player->CD_time = frame + 1000;
+            player->CD_time = frame + CD;
         }
     }
 }
@@ -218,6 +233,21 @@ void SingleGame::frame_plus()
     frame++;
 //    qDebug() << frame;
     //std::printf("%d\n", frame);
+    if (bomb_queue.GetHeadTime()<=frame+10)
+    {
+        bomb *theBomb = bomb_queue.Gethead()->thebomb;
+        int dx[4] = {-1,0,1,0};
+        int dy[4] = {0,-1,0,1};
+        map[theBomb->GetY()][theBomb->GetX()] = EXPLODING;
+        for (int i=0;i<4;i++){
+            if (isValid(dx[i]+theBomb->GetX(),dy[i]+theBomb->GetY())){
+                int x = dx[i]+theBomb->GetX();
+                int y = dy[i]+theBomb->GetY();
+                if (map[y][x] == BRICK || map[y][x] == EMPTY)
+                    map[y][x] = EXPLODING;
+            }
+        }
+    }
     while (bomb_queue.GetHeadTime()<=frame)
         explode();
     if (frame % 2 == 0)
@@ -234,7 +264,7 @@ void SingleGame::frame_plus()
                 if (qrand() % 100 > 90)
                     PlaceBomb(0, enemys[i]->Get_locationx(), enemys[i]->Get_locationy());
             }
-    CD_show->display(QString::number(player->CD_time));
+    CD_display->setValue(max(player->CD_time-frame, 0));
     return;
 }
 
@@ -248,7 +278,6 @@ bool SingleGame::isValid(int x, int y)
 
 int SingleGame::explode()
 {
-    //TODO
     while (bomb_queue.GetHeadTime()<=frame){
         bomb* theBomb = bomb_queue.pop()->thebomb;
         int dx[4] = {-1,0,1,0};
@@ -257,7 +286,7 @@ int SingleGame::explode()
             if (isValid(dx[i]+theBomb->GetX(),dy[i]+theBomb->GetY())){
                 int x = dx[i]+theBomb->GetX();
                 int y = dy[i]+theBomb->GetY();
-                if (map[y][x] == BRICK)
+                if (map[y][x] == EXPLODING)
                     map[y][x] = EMPTY;
                 if (player->Get_locationx()==x && player->Get_locationy()==y){
                     player->Set_HP(player->Get_HP()-1);
@@ -268,8 +297,9 @@ int SingleGame::explode()
                         imaWin.load(lose_pic_path);
                         imaWin.scaled(200,100,Qt::KeepAspectRatio);
                         LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
-                        LabelPicturePause->setGeometry(400,200,200,100);
+                        LabelPicturePause->setGeometry(150,0,500,342);
                         LabelPicturePause->setScaledContents(true);
+                        LabelPicturePause->raise();
                         LabelPicturePause->show();
 
                         timer->stop();
@@ -308,4 +338,16 @@ void SingleGame::MapLoad(int idx)
         i++;
     }
 
+}
+
+void SingleGame::next_game()
+{
+    MapLoad(1);
+    frame = 0;
+    LabelPicturePause->close();
+    next_level->setVisible(false);
+    next_level->close();
+    delete next_level;
+    repaint();
+    timer->start(1);
 }
