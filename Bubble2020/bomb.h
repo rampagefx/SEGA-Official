@@ -6,6 +6,7 @@
 #define WALL     2 //不可破坏障碍
 #define BOMB     3 //炸弹
 #define OUT      4 //出口
+#define NPCMAP      9
 #define OCCUPIED 100 //有人
 class SingleGame;
 class bomb

@@ -1,11 +1,13 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QDebug>
+#include <QPushButton>
 #include <cstdlib>
 #include <ctime>
 #include "singlegame.h"
 #include "pikachu.h"
 #include "npc.h"
+#include "filepath.h"
 
 using namespace std;
 #define PLAYING 0
@@ -18,7 +20,6 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     GameStatus = 0;
     resize(windows_size_x, windows_size_y);
     map = new int*[map_size_y];
-    // Test map
     for (int i = 0; i < map_size_x; ++i)
     {
         map[i] = new int[map_size_x];
@@ -26,21 +27,19 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     for (int i=0; i < map_size_y; ++i)
         for (int j = 0; j < map_size_x; ++j)
             map[i][j] = 0; // initialize
-
-    // Test map end
-
-    MapLoad();
+    MapLoad(0);
     switch (player_id)
     {
     case 0: player = new Pikachu(1, 101, 1, 10, 10);
     //default: this->close();
     }
     // Test img read
-    map_image[0].load("../../../../img/white.png");
-    map_image[1].load("../../../../img/bomb.png");
-    character_image.load("../../../../img/character.png");
-    bomb_image.load("../../../../img/black.png");
-    enemy_image.load("../../../../img/npc.png");
+    for(int i = 0; i < 5; i++)
+        map_image[i].load(map_image_path[i]);
+    character_image.load(player->pic_path);
+//    bomb_image.load(map_image_path[3]);
+    enemy_image.load(npc_pic_path);
+    LabelPicturePause=new QLabel(this);
     int count = 0;
     for (int i = 0; i < map_size_x; i++)
     {
@@ -51,7 +50,7 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
             map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
             map_pic[j][i] -> setScaledContents(true);
             map_pic[j][i] -> show();
-            if (map[j][i] == 9 && count < enemy_num)
+            if (map[j][i] == NPCMAP && count < enemy_num)
             {
                 enemys[count] = new npc(1, count, NPC, i, j);
                 map[j][i] = 0;
@@ -63,6 +62,12 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     grabKeyboard();
     QKeyEvent *ev;
     keyPressEvent(ev);
+    CD_show = new QLCDNumber(this);
+    CD_show->setGeometry(600, 600, 100, 50);
+    // 设置能显示的位数
+    CD_show->setDigitCount(3);
+    // 设置显示的模式为十进制
+    CD_show->setMode(QLCDNumber::Dec);
     timer = new QTimer;
     connect(timer, SIGNAL(timeout()), this, SLOT(repaint()));
     connect(timer,SIGNAL(timeout()), this, SLOT(frame_plus()));
@@ -94,9 +99,26 @@ void SingleGame::paintEvent(QPaintEvent *event)
                 map_pic[j][i] -> setScaledContents(true);
                 map_pic[j][i] -> show();
             }
+            else if (map[j][i]==WALL)
+            {
+                int tmp = 2;
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
+                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+                map_pic[j][i] -> setScaledContents(true);
+                map_pic[j][i] -> show();
+            }
             else if (map[j][i]==BOMB)
             {
-                map_pic[j][i] -> setPixmap(QPixmap::fromImage(bomb_image));
+                int tmp = 3;
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
+                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+                map_pic[j][i] -> setScaledContents(true);
+                map_pic[j][i] -> show();
+            }
+            else if (map[j][i]==OUT)
+            {
+                int tmp = 4;
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
                 map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
                 map_pic[j][i] -> setScaledContents(true);
                 map_pic[j][i] -> show();
@@ -128,7 +150,16 @@ void SingleGame::paintEvent(QPaintEvent *event)
     if (map[j][i] == OUT)
     {
         GameStatus = PASS;
-        this->GamePass();
+        QImage imaWin;
+        imaWin.load(win_pic_path);
+        imaWin.scaled(200,100,Qt::KeepAspectRatio);
+        LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
+        LabelPicturePause->setGeometry(400,200,200,100);
+        LabelPicturePause->setScaledContents(true);
+        LabelPicturePause->show();
+        QPushButton *next_level = new QPushButton(this);
+        next_level->setGeometry(700,700,75,50);
+        timer->stop();
     }
 //    qDebug() << player->Get_locationx() << ' ' << player->Get_locationy() << '\n';
     // TODO
@@ -203,6 +234,7 @@ void SingleGame::frame_plus()
                 if (qrand() % 100 > 90)
                     PlaceBomb(0, enemys[i]->Get_locationx(), enemys[i]->Get_locationy());
             }
+    CD_show->display(QString::number(player->CD_time));
     return;
 }
 
@@ -230,7 +262,18 @@ int SingleGame::explode()
                 if (player->Get_locationx()==x && player->Get_locationy()==y){
                     player->Set_HP(player->Get_HP()-1);
                     if (player->Get_HP() <= 0)
-                        GameOver();
+                    {
+                        GameStatus = DEAD;
+                        QImage imaWin;
+                        imaWin.load(lose_pic_path);
+                        imaWin.scaled(200,100,Qt::KeepAspectRatio);
+                        LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
+                        LabelPicturePause->setGeometry(400,200,200,100);
+                        LabelPicturePause->setScaledContents(true);
+                        LabelPicturePause->show();
+
+                        timer->stop();
+                    }
                 }
                 for (int j=0;j<5;j++){
                     if (enemys[j]->Get_locationx()==x && enemys[j]->Get_locationy()==y){
@@ -246,13 +289,9 @@ int SingleGame::explode()
     return 1;
 }
 
-void SingleGame::MapLoad()
+void SingleGame::MapLoad(int idx)
 {
-#ifdef _WIN64
-    QFile file("../../../../map.txt");
-#elif __APPLE__
-    QFile file("../../../../map.txt");
-#endif
+    QFile file(map_file_path[idx]);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug()<<"Can't open the file!"<<endl;

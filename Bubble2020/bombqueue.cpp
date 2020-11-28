@@ -1,6 +1,6 @@
 #include "bombqueue.h"
 
-BombQueue::BombQueue()
+BombQueue::BombQueue() // 构造函数，初始化一个空队列
 {
     head = nullptr;
     len = 0;
@@ -8,28 +8,28 @@ BombQueue::BombQueue()
 
 bool BombQueue::push(bombStruct *in)
 {
-    if (len == 0)
+    if (len == 0) // 队列长度为0的时候，直接加入队列中
     {
         // empty queue
         head = in;
         len = 1;
     }
-    else if (len == 1)
+    else if (len == 1) // 队列长度为1的时候，特殊处理
     {
-        if (in -> explodeTime <= head -> explodeTime)
+        if (in -> explodeTime <= head -> explodeTime) // 新入队的炸弹爆炸时间较早，变为新的头指针
         {
             in -> next = head;
             head = in;
             len = 2;
         }
-        else
+        else // 爆炸时间较晚，放在后面
         {
             head -> next = in;
             len = 2;
         }
 
     }
-    else if (in -> explodeTime <= head -> explodeTime)
+    else if (in -> explodeTime <= head -> explodeTime) // 新入队的炸弹爆炸时间较早，变为新的头指针
     {
         // HEAD needs more time to explode
         in -> next = head;
@@ -58,7 +58,7 @@ bool BombQueue::push(bombStruct *in)
     return true;
 }
 
-bombStruct* BombQueue::pop()
+bombStruct* BombQueue::pop() // 直接返回头指针，然后出队，长度减1
 {
     if (len == 0)
         return nullptr;
@@ -68,7 +68,7 @@ bombStruct* BombQueue::pop()
     return temp;
 }
 
-int BombQueue::GetHeadTime()
+int BombQueue::GetHeadTime() // 返回当前头指针对应的炸弹的爆炸时间
 {
     if (len == 0)
         return 3e8;

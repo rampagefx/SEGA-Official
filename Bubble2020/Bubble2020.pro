@@ -38,6 +38,7 @@ SOURCES += \
     startgamemenu.cpp
 
 HEADERS += \
+    filepath.h \
     helpmenu.h \
         mainwindow.h \
         character.h \
