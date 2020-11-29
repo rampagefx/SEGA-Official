@@ -58,7 +58,7 @@ void SinglePlayerMenu::on_pushButtonDecide_clicked()
     if (ui->textCharacter1->isVisible())
     {
         int character_choose = 1;
-        SingleGame *newgame = new SingleGame(0);
+        SingleGame *newgame = new SingleGame(0, nullptr);
         newgame->show();
 
     }
