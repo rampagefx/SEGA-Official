@@ -36,11 +36,11 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     //default: this->close();
     }
     // Test img read
-    map_image[0].load("../../../../img/white.png");
-    map_image[1].load("../../../../img/bomb.png");
-    character_image.load("../../../../img/character.png");
-    bomb_image.load("../../../../img/black.png");
-    enemy_image.load("../../../../img/npc.png");
+    map_image[0].load("../img/white.png");
+    map_image[1].load("../img/bomb.png");
+    character_image.load("../img/character.png");
+    bomb_image.load("../img/black.png");
+    enemy_image.load("../img/npc.png");
     int count = 0;
     for (int i = 0; i < map_size_x; i++)
     {
@@ -77,7 +77,7 @@ void SingleGame::paintEvent(QPaintEvent *event)
     for (int i = 0; i < map_size_x; i++)
     {
         for (int j = 0; j < map_size_y; j++)
-        {
+        {//map->map_pic
             if (map[j][i] == 0)
             {
                 int tmp = 0;
@@ -108,12 +108,14 @@ void SingleGame::paintEvent(QPaintEvent *event)
         }
     }
     //explode();
+    //show character
     int j = player->Get_locationy();
     int i = player->Get_locationx();
     map_pic[j][i] -> setPixmap(QPixmap::fromImage(character_image));
     map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
     map_pic[j][i] -> setScaledContents(true);
     map_pic[j][i] -> show();
+    //show enemy
     for (int k = 0;k < enemy_num; k++)
     {
         if (enemys[k]->Get_HP()<=0) continue;
@@ -161,7 +163,7 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
         player->skill();
     }
 }
-bool SingleGame::PlaceBomb(int p, int x, int y)
+bool SingleGame::PlaceBomb(int p, int x, int y)     //放置炸弹
 {
     // p = property
     if (map[y][x] == BOMB)
@@ -199,6 +201,7 @@ void SingleGame::frame_plus()
                     PlaceBomb(0, enemys[i]->Get_locationx(), enemys[i]->Get_locationy());
             }
     return;
+
 }
 
 bool SingleGame::isValid(int x, int y)
@@ -243,7 +246,7 @@ int SingleGame::explode()
 
 void SingleGame::MapLoad()
 {
-    QFile file("../../../../map.txt");
+    QFile file("../map.txt");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug()<<"Can't open the file!"<<endl;

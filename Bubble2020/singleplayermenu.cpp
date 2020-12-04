@@ -22,12 +22,12 @@ SinglePlayerMenu::~SinglePlayerMenu()
     delete ui;
 }
 
-void SinglePlayerMenu::on_pushButtonBackchoose_clicked()
+void SinglePlayerMenu::on_pushButtonBackchoose_clicked()    //返回游戏模式选择
 {
     MainWindow::mutualUi->status = 1;
     this->close();
 }
-void SinglePlayerMenu::on_pushButtonBGMsingle_clicked()
+void SinglePlayerMenu::on_pushButtonBGMsingle_clicked()     //BGM
 {
     if(MainWindow::mutualUi->isBGM)
     {
@@ -43,7 +43,7 @@ void SinglePlayerMenu::on_pushButtonBGMsingle_clicked()
         MainWindow::mutualUi->bgm->stop();
     }
 }
-void SinglePlayerMenu::on_pushButtonNotDecide_clicked()
+void SinglePlayerMenu::on_pushButtonNotDecide_clicked()     //取消选择
 {
     ui->textCharacter1->setVisible(false);
     ui->pushButtonDecide->setVisible(false);
@@ -65,7 +65,7 @@ void SinglePlayerMenu::on_pushButtonDecide_clicked()
 
         //TODO:
 }
-void SinglePlayerMenu::on_pushButtonCharacter1_clicked()
+void SinglePlayerMenu::on_pushButtonCharacter1_clicked()    //选择角色1
 {
     ui->textCharacter1->setVisible(true);
     ui->pushButtonDecide->setVisible(true);
@@ -74,11 +74,11 @@ void SinglePlayerMenu::on_pushButtonCharacter1_clicked()
     ui->pushButtonCharacter3->setVisible(false);
     repaint();
 }
-void SinglePlayerMenu::on_pushButtonCharacter2_clicked()
+void SinglePlayerMenu::on_pushButtonCharacter2_clicked()       //选择角色2
 {
 
 }
-void SinglePlayerMenu::on_pushButtonCharacter3_clicked()
+void SinglePlayerMenu::on_pushButtonCharacter3_clicked()        //选择角色3
 {
 
 }

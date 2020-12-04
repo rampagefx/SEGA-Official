@@ -19,6 +19,7 @@ const int map_size_y = 20;
 const int pic_size_x = 35;
 const int pic_size_y = 35;
 const int enemy_num = 5;
+
 class SingleGame : public QWidget
 {
     Q_OBJECT

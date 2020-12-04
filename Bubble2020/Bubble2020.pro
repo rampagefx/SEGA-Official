@@ -26,6 +26,7 @@ CONFIG += c++11
 
 SOURCES += \
         bomb.cpp \
+    doublegame.cpp \
     helpmenu.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
     startgamemenu.cpp
 
 HEADERS += \
+    doublegame.h \
     helpmenu.h \
         mainwindow.h \
         character.h \

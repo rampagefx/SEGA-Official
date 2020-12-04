@@ -5,12 +5,15 @@
 // Test include start
 #include <QDebug>
 #include "singlegame.h"
+#include "doublegame.h"
 // Test include end
 
 int main(int argc, char *argv[])
 {
       QApplication a(argc, argv);
-      SingleGame *w = new SingleGame(0, nullptr);
+//      SingleGame *w = new SingleGame(0, nullptr);
+      int player_id[2] = {0,0};
+      DoubleGame *w = new DoubleGame(player_id, nullptr);
       w->show();
 //      SingleGame w(nullptr);
 //      w.show();

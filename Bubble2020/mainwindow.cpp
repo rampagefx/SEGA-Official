@@ -30,24 +30,24 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-void MainWindow::on_pushButtonStart_clicked()
+void MainWindow::on_pushButtonStart_clicked()   //开始游戏
 {
     status = 1;
     StartGameMenu *new_widget = new StartGameMenu(this);
     new_widget->show();
 }
-void MainWindow::on_pushButtonHelp_clicked()
+void MainWindow::on_pushButtonHelp_clicked()    //帮助菜单
 {
     status = 5;
     HelpMenu *new_widget = new HelpMenu(this);
     new_widget->show();
 }
-void MainWindow::on_pushButtonQuit_clicked()
+void MainWindow::on_pushButtonQuit_clicked()    //退出游戏
 {
     QApplication *quitevent = nullptr;
     quitevent->quit();
 }
-void MainWindow::on_pushButtonBGM_clicked()
+void MainWindow::on_pushButtonBGM_clicked()     //音量设置
 {
     if(isBGM)
     {
