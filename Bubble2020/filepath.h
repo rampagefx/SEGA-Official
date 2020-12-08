@@ -15,6 +15,7 @@
     static const char *button_pic_path = "../../../../img/continuebutton.png";
     static const char *bgm_path = "../../../../music/menu.wav";
     static const char *background_pic_path = "../../../../img/menu.jpeg";
+    const char *game_background = "../../../../img/background.jpg";
 #elif _WIN64
     static const char *win_pic_path = "../img/win.png";
     static const char *lose_pic_path = "../img/lose.png";

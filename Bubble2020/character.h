@@ -18,7 +18,7 @@ private:
     int status; // moving status
     int status_counter; // remaining frames before character can move again
 public:
-    QString pic_path;
+    QString pic_path, big_pic_path, discription;
     Character(int, int ,int, int ,int);
     virtual ~Character();
     int CD_time = 200;

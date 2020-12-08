@@ -42,6 +42,11 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     character_image.load(player->pic_path);
 //    bomb_image.load(map_image_path[3]);
     enemy_image.load(npc_pic_path);
+    player_image.load(player->big_pic_path);
+    player_profile = new QLabel(this);
+    player_profile->setPixmap(QPixmap::fromImage(player_image));
+    player_profile->setGeometry(750, 50, 200, 200);
+    player_profile->show();
     LabelPicturePause=new QLabel(this);
     int count = 0;
     for (int i = 0; i < map_size_x; i++)
@@ -61,12 +66,23 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
             }
         }
     }
+    discription[2] = new QLabel(this);
+    discription[2]->setGeometry(775, 275, 200, 100);
+    discription[2]->setText(player->discription);
+    background_image.load(game_background);
+    game_back = new QLabel(this);
+    game_back->setGeometry(0, 0, 1000, 730);
+    game_back->setPixmap(QPixmap::fromImage(background_image));
+    game_back->show();
+    game_back->lower();
     grabKeyboard();
     QKeyEvent *ev;
     keyPressEvent(ev);
+    HP_show = new QLCDNumber(this);
+    HP_show->setGeometry(800, 500, 100, 50);
     CD_display = new QProgressBar(this);
     CD_display->setMaximum(CD);
-    CD_display->setGeometry(600, 600, 100, 50);
+    CD_display->setGeometry(800, 600, 100, 50);
     CD_display->setValue(CD);
     CD_display->show();
     timer = new QTimer;
@@ -265,6 +281,7 @@ void SingleGame::frame_plus()
                     PlaceBomb(0, enemys[i]->Get_locationx(), enemys[i]->Get_locationy());
             }
     CD_display->setValue(max(player->CD_time-frame, 0));
+    HP_show->display(player->Get_HP());
     return;
 }
 

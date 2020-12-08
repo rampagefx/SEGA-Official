@@ -14,8 +14,8 @@
 #include "bomb.h"
 #include "bombqueue.h"
 #include "npc.h"
-const int windows_size_x = 800; // 窗口尺寸
-const int windows_size_y = 800;
+const int windows_size_x = 1000; // 窗口尺寸
+const int windows_size_y = 730;
 const int map_size_x = 20; // 地图尺寸（格子数量）
 const int map_size_y = 20;
 const int pic_size_x = 35; // 图片尺寸（像素）
@@ -39,13 +39,18 @@ private:
     QLabel *map_pic[map_size_y][map_size_x];
     QLabel *LabelPicturePause;
     QLabel *character_pic, *character_name;
+    QLabel *player_profile;
+    QLabel *discription[3];
+    QLabel *game_back;
     QImage map_image[6];
     QImage character_image;
     QImage enemy_image;
+    QImage player_image;
+    QImage background_image;
 //    QImage bomb_image;
     QPushButton *next_level;
     QPoint start_point = QPoint(50, 50);
-    QLCDNumber *CD_show;
+    QLCDNumber *HP_show;
     QProgressBar *CD_display;
     BombQueue bomb_queue;
 public:
