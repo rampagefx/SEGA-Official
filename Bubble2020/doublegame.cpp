@@ -42,6 +42,7 @@ DoubleGame::DoubleGame(int player_id[], QWidget *parent) : QWidget(parent)
     case 0: player[1] = new Pikachu(1, 2, 1, 9, 10);
     //default: this->close();
     }
+    map[10][2] = 100;
     map[10][9] = 100;
     //Test img read
     map_image[0].load("../img/white.png");
