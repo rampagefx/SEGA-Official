@@ -37,12 +37,20 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     //default: this->close();
     }
     // Test img read
+<<<<<<< Updated upstream
     for(int i = 0; i < 6; i++)
         map_image[i].load(map_image_path[i]);
     character_image.load(player->pic_path);
 //    bomb_image.load(map_image_path[3]);
     enemy_image.load(npc_pic_path);
     LabelPicturePause=new QLabel(this);
+=======
+    map_image[0].load("../img/white.png");
+    map_image[1].load("../img/bomb.png");
+    character_image.load("../img/character.png");
+    bomb_image.load("../img/black.png");
+    enemy_image.load("../img/npc.png");
+>>>>>>> Stashed changes
     int count = 0;
     for (int i = 0; i < map_size_x; i++)
     {
