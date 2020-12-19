@@ -36,11 +36,10 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     //default: this->close();
     }
     // Test img read
-    map_image[0].load("../../../../img/white.png");
-    map_image[1].load("../../../../img/bomb.png");
-    character_image.load("../../../../img/character.png");
-    bomb_image.load("../../../../img/black.png");
-    enemy_image.load("../../../../img/npc.png");
+    map_image[0].load("../img/white.png");
+    map_image[1].load("../img/bomb.png");
+    bomb_image.load("../img/black.png");
+    enemy_image.load("../img/npc.png");
     int count = 0;
     for (int i = 0; i < map_size_x; i++)
     {
@@ -243,7 +242,7 @@ int SingleGame::explode()
 
 void SingleGame::MapLoad()
 {
-    QFile file("../../../../map.txt");
+    QFile file("../map.txt");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug()<<"Can't open the file!"<<endl;
