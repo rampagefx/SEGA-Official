@@ -76,8 +76,8 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     game_back->show();
     game_back->lower();
     grabKeyboard();
-    QKeyEvent *ev;
-    keyPressEvent(ev);
+    //QKeyEvent *ev;
+    //keyPressEvent(ev);
     HP_show = new QLCDNumber(this);
     HP_show->setGeometry(800, 500, 100, 50);
     CD_display = new QProgressBar(this);
@@ -217,7 +217,7 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
     }
     else if (event->key()==Qt::Key_Space)
     {
-        PlaceBomb(0, player->Get_locationx(), player->Get_locationy());
+        PlaceBomb(player->bomb_property, player->Get_locationx(), player->Get_locationy());
     }
     else if (event->key()==Qt::Key_Q)
     {
@@ -261,18 +261,20 @@ void SingleGame::frame_plus()
                 int y = dy[i]+theBomb->GetY();
                 if (map[y][x] == BRICK || map[y][x] == EMPTY)
                     map[y][x] = EXPLODING;
+                if (map[y][x] == WALL && theBomb->GetDamage() == 2)
+                    map[y][x] = EXPLODING;
             }
         }
     }
     while (bomb_queue.GetHeadTime()<=frame)
         explode();
-    if (frame % 2 == 0)
+    if (frame % 20 == 0)
         for (int i=0;i<5;i++)
             if (enemys[i]->Get_HP()>0){
                 enemys[i]->automove(map);
 
             }
-    if (frame % 10 == 0)
+    if (frame % 50 == 0)
         for (int i=0;i<5;i++)
             if (enemys[i]->Get_HP()>0){
                 // enemys[i]->automove(map);
@@ -297,9 +299,9 @@ int SingleGame::explode()
 {
     while (bomb_queue.GetHeadTime()<=frame){
         bomb* theBomb = bomb_queue.pop()->thebomb;
-        int dx[4] = {-1,0,1,0};
-        int dy[4] = {0,-1,0,1};
-        for (int i=0;i<4;i++){
+        int dx[5] = {-1,0,1,0,0};
+        int dy[5] = {0,-1,0,1,0};
+        for (int i=0;i<5;i++){
             if (isValid(dx[i]+theBomb->GetX(),dy[i]+theBomb->GetY())){
                 int x = dx[i]+theBomb->GetX();
                 int y = dy[i]+theBomb->GetY();

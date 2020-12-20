@@ -15,7 +15,7 @@
     static const char *button_pic_path = "../../../../img/continuebutton.png";  // 按键素材文件
     static const char *bgm_path = "../../../../music/menu.wav";  // BGM素材文件
     static const char *background_pic_path = "../../../../img/menu.jpeg";  // 主界面背景素材文件
-    const char *game_background = "../../../../img/background.jpg";  // 单人游戏素材文件
+    static const char *game_background = "../../../../img/background.jpg";  // 单人游戏素材文件
 #elif _WIN64
     static const char *win_pic_path = "../img/win.png";
     static const char *lose_pic_path = "../img/lose.png";
