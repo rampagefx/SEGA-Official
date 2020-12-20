@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "helpmenu.h"
 #include "startgamemenu.h"
+#include "filepath.h"
 using namespace std;
 
 MainWindow *MainWindow::mutualUi = nullptr;
@@ -17,37 +18,32 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFixedSize(MainWindowLength,MainWindowWidth);   //界面大小设定
     status = 0;
     isBGM = 1;
-    #ifdef _WIN64
-        QString bgm_dir = QCoreApplication::applicationFilePath() + "/music/menu.wav";
-        bgm = new QSound(bgm_dir,this);
-    #elif __APPLE__
-        QString bgm_dir = QCoreApplication::applicationFilePath().section('/',0,-6) + "/music/menu.wav";
-        bgm = new QSound(bgm_dir,this);
-    #endif
+    QString bgm_dir = bgm_path;
+    bgm = new QSound(bgm_dir,this);
     this->setAutoFillBackground(true);
 }
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-void MainWindow::on_pushButtonStart_clicked()   //开始游戏
+void MainWindow::on_pushButtonStart_clicked()
 {
     status = 1;
     StartGameMenu *new_widget = new StartGameMenu(this);
     new_widget->show();
 }
-void MainWindow::on_pushButtonHelp_clicked()    //帮助菜单
+void MainWindow::on_pushButtonHelp_clicked()
 {
     status = 5;
     HelpMenu *new_widget = new HelpMenu(this);
     new_widget->show();
 }
-void MainWindow::on_pushButtonQuit_clicked()    //退出游戏
+void MainWindow::on_pushButtonQuit_clicked()
 {
     QApplication *quitevent = nullptr;
     quitevent->quit();
 }
-void MainWindow::on_pushButtonBGM_clicked()     //音量设置
+void MainWindow::on_pushButtonBGM_clicked()
 {
     if(isBGM)
     {
@@ -69,7 +65,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     {
         ui->centralwidget->setVisible(true);
         this->setAutoFillBackground(true);
-        background.setBrush(QPalette::Background,QBrush(QPixmap(QCoreApplication::applicationFilePath().section('/',0,-6) + "/img/menu.jpeg")));
+        background.setBrush(QPalette::Background,QBrush(QPixmap(background_pic_path)));
         this->setPalette(background);
     }
     else

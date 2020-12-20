@@ -1,17 +1,21 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QDebug>
+#include <QPixmap>
+#include <QIcon>
+#include <QSize>
 #include <cstdlib>
 #include <ctime>
 #include "doublegame.h"
 #include "pikachu.h"
 #include "npc.h"
+#include "filepath.h"
 
 using namespace std;
 #define PLAYING 0
 #define DEAD 1
 #define PASS 2
-
+const int CD = 500;
 DoubleGame::DoubleGame(int player_id[], QWidget *parent) : QWidget(parent)
 {
     this->setAttribute(Qt::WA_DeleteOnClose);
@@ -28,30 +32,36 @@ DoubleGame::DoubleGame(int player_id[], QWidget *parent) : QWidget(parent)
         for (int j = 0; j < map_size_x; ++j)
             map[i][j] = 0; // initialize
 
-    // Test map end
-
-    MapLoad();
+    MapLoad(0);
     switch(player_id[0])
     {
-    case 0: player[0] = new Pikachu(1, 1, 1, 2, 10);
-    //default: this->close();
+        case 0: player[0] = new Pikachu(1, 1, 1, 2, 10);
     }
     map[10][2] = 100;
     switch(player_id[1])
     {
-    case 0: player[1] = new Pikachu(1, 2, 1, 9, 10);
-    //default: this->close();
+        case 0: player[1] = new Pikachu(1, 2, 1, 9, 10);
     }
-    map[10][2] = 100;
     map[10][9] = 100;
     //Test img read
-    map_image[0].load("../img/white.png");
-    map_image[1].load("../img/black.png");
-    //To be modified if new characters added...
-    character_image[0].load("../img/character.png");
-    character_image[1].load("../img/character.png");
-    enemy_image.load("../img/npc.png");
-    bomb_image.load("../img/bomb.png");
+    for(int i = 0; i < 6; i++)
+        map_image[i].load(map_image_path[i]);
+    character_image[0].load(player[0]->pic_path);
+    character_image[1].load(player[1]->pic_path);
+//    bomb_image.load(map_image_path[3]);
+    enemy_image.load(npc_pic_path);
+    player_image[0].load(player[0]->big_pic_path);
+    player_image[1].load(player[1]->big_pic_path);
+    player_profile[0] = new QLabel(this);
+    player_profile[0]->setPixmap(QPixmap::fromImage(player_image[0]));
+    player_profile[0]->setGeometry(750+286, 50, 200, 200);
+    player_profile[0]->show();
+    player_profile[1] = new QLabel(this);
+    player_profile[1]->setPixmap(QPixmap::fromImage(player_image[1]));
+    player_profile[1]->setGeometry(50, 50, 200, 200);
+    player_profile[1]->show();
+    LabelPicturePause=new QLabel(this);
+
     int count = 0; //counter for enemies
     //map_pic initialization
     for (int i = 0; i < map_size_x; i++)
@@ -71,10 +81,35 @@ DoubleGame::DoubleGame(int player_id[], QWidget *parent) : QWidget(parent)
             }
         }
     }
+    discription[2] = new QLabel(this);
+    discription[2]->setGeometry(775+286, 275, 200, 100);
+    discription[2]->setText(player[0]->discription);
+    background_image.load(game_background_double);
+    game_back = new QLabel(this);
+    game_back->setGeometry(0, 0, 1286, 730);
+    game_back->setPixmap(QPixmap::fromImage(background_image));
+    game_back->show();
+    game_back->lower();
     // Test img end
     grabKeyboard();
-    QKeyEvent *ev;
-    keyPressEvent(ev);
+ //   QKeyEvent *ev;
+ //   keyPressEvent(ev);
+
+    HP_show[0] = new QLCDNumber(this);
+    HP_show[0]->setGeometry(100, 500, 100, 50);
+    CD_display[0] = new QProgressBar(this);
+    CD_display[0]->setMaximum(CD);
+    CD_display[0]->setGeometry(100, 600, 100, 50);
+    CD_display[0]->setValue(CD);
+    CD_display[0]->show();
+    HP_show[1] = new QLCDNumber(this);
+    HP_show[1]->setGeometry(800+286, 500, 100, 50);
+    CD_display[1] = new QProgressBar(this);
+    CD_display[1]->setMaximum(CD);
+    CD_display[1]->setGeometry(800+286, 600, 100, 50);
+    CD_display[1]->setValue(CD);
+    CD_display[1]->show();
+
     timer = new QTimer;
     connect(timer, SIGNAL(timeout()), this, SLOT(repaint()));
     connect(timer,SIGNAL(timeout()), this, SLOT(frame_plus()));
@@ -85,11 +120,12 @@ DoubleGame::DoubleGame(int player_id[], QWidget *parent) : QWidget(parent)
 void DoubleGame::paintEvent(QPaintEvent *event)
 {
     QPainter painter;
+    //show map
     for (int i = 0; i < map_size_x; i++)
     {
         for (int j = 0; j < map_size_y; j++)
-        {//map->map_pic
-            if (map[j][i] == 0) //Empty
+        {
+            if (map[j][i] == 0)
             {
                 int tmp = 0;
                 map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
@@ -105,9 +141,26 @@ void DoubleGame::paintEvent(QPaintEvent *event)
                 map_pic[j][i] -> setScaledContents(true);
                 map_pic[j][i] -> show();
             }
+            else if (map[j][i]==WALL)
+            {
+                int tmp = 2;
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
+                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+                map_pic[j][i] -> setScaledContents(true);
+                map_pic[j][i] -> show();
+            }
             else if (map[j][i]==BOMB)
             {
-                map_pic[j][i] -> setPixmap(QPixmap::fromImage(bomb_image));
+                int tmp = 3;
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
+                map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
+                map_pic[j][i] -> setScaledContents(true);
+                map_pic[j][i] -> show();
+            }
+            else if (map[j][i]==EXPLODING)
+            {
+                int tmp = 5;
+                map_pic[j][i] -> setPixmap(QPixmap::fromImage(map_image[tmp]));
                 map_pic[j][i] -> setGeometry((i-1)*pic_size_x+start_point.x(), (j-1)*pic_size_y+start_point.y(), pic_size_x, pic_size_y);
                 map_pic[j][i] -> setScaledContents(true);
                 map_pic[j][i] -> show();
@@ -118,7 +171,7 @@ void DoubleGame::paintEvent(QPaintEvent *event)
             }
         }
     }
-    //show charater
+    // 绘制人物
     for (int i = 0; i<2; i++)
     {
         int x = player[i]->Get_locationx();
@@ -128,7 +181,6 @@ void DoubleGame::paintEvent(QPaintEvent *event)
         map_pic[y][x] -> setScaledContents(true);
         map_pic[y][x] -> show();
     }
-    //show enemy
     for (int k = 0;k < enemy_num; k++)
     {
         if (enemys[k]->Get_HP()<=0) continue;
@@ -224,6 +276,21 @@ void DoubleGame::frame_plus()
     frame++;
 //    qDebug() << frame;
     //std::printf("%d\n", frame);
+    if (bomb_queue.GetHeadTime()<=frame+10)
+    {
+        bomb *theBomb = bomb_queue.Gethead()->thebomb;
+        int dx[4] = {-1,0,1,0};
+        int dy[4] = {0,-1,0,1};
+        map[theBomb->GetY()][theBomb->GetX()] = EXPLODING;
+        for (int i=0;i<4;i++){
+            if (isValid(dx[i]+theBomb->GetX(),dy[i]+theBomb->GetY())){
+                int x = dx[i]+theBomb->GetX();
+                int y = dy[i]+theBomb->GetY();
+                if (map[y][x] == BRICK || map[y][x] == EMPTY)
+                    map[y][x] = EXPLODING;
+            }
+        }
+    }
     while (bomb_queue.GetHeadTime()<=frame)
         explode();
     if (frame % 2 == 0)
@@ -239,6 +306,10 @@ void DoubleGame::frame_plus()
                 if (qrand() % 100 > 90)
                     PlaceBomb(0, enemys[i]->Get_locationx(), enemys[i]->Get_locationy());
             }
+    CD_display[0]->setValue(max(player[0]->CD_time-frame, 0));
+    HP_show[0]->display(player[0]->Get_HP());
+    CD_display[1]->setValue(max(player[1]->CD_time-frame, 0));
+    HP_show[1]->display(player[1]->Get_HP());
     return;
 }
 bool DoubleGame::isValid(int x, int y)
@@ -262,7 +333,7 @@ int DoubleGame::explode()
             {
                 int x = dx[i]+theBomb->GetX();
                 int y = dy[i]+theBomb->GetY();
-                if (map[y][x] == BRICK)
+                if (map[y][x] == EXPLODING)
                     map[y][x] = EMPTY;
                 for (int j = 0; j < 2; j++)
                 {
@@ -271,8 +342,28 @@ int DoubleGame::explode()
                         player[j]->Set_HP(player[0]->Get_HP()-1);
                         if (player[j]->Get_HP() <= 0)
                         {
-                            GameOver(j);
-                            break;
+                            GameStatus = DEAD;
+                            QImage imaWin;
+                            if(j == 0){
+                                imaWin.load(win_pic_path_double_2);
+                                imaWin.scaled(200,100,Qt::KeepAspectRatio);
+                                LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
+                                LabelPicturePause->setGeometry(150+286,0,500,342);
+                                LabelPicturePause->setScaledContents(true);
+                                LabelPicturePause->raise();
+                                LabelPicturePause->show();
+                                timer->stop();
+                            }
+                            else if(j == 1){
+                                imaWin.load(win_pic_path_double_1);
+                                imaWin.scaled(200,100,Qt::KeepAspectRatio);
+                                LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
+                                LabelPicturePause->setGeometry(150+286,0,500,342);
+                                LabelPicturePause->setScaledContents(true);
+                                LabelPicturePause->raise();
+                                LabelPicturePause->show();
+                                timer->stop();
+                            }
                         }
                     }
                 }
@@ -290,9 +381,9 @@ int DoubleGame::explode()
     return 1;
 }
 
-void DoubleGame::MapLoad()
+void DoubleGame::MapLoad(int idx)
 {
-    QFile file("../map.txt");
+    QFile file(map_file_path[idx]);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug()<<"Can't open the file!"<<endl;
@@ -308,13 +399,17 @@ void DoubleGame::MapLoad()
         }
         i++;
     }
+
 }
 
-
-
-
-
-
-
-
-
+void DoubleGame::next_game()
+{
+    MapLoad(1);
+    frame = 0;
+    LabelPicturePause->close();
+    next_level->setVisible(false);
+    next_level->close();
+    delete next_level;
+    repaint();
+    timer->start(1);
+}

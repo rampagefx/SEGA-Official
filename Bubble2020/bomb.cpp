@@ -22,7 +22,7 @@ int bomb::Set(int p, int x, int y, int **map){
        waitingTime = 50;
        damage = 1;
        break;
-   case 1:
+   case 1:                    // 时间更长的炸弹
        waitingTime = 100;
        damage = 1;
        break;
@@ -31,4 +31,3 @@ int bomb::Set(int p, int x, int y, int **map){
    }
    return waitingTime;
 }
-

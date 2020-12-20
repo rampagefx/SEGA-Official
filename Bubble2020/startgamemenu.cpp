@@ -41,17 +41,17 @@ void StartGameMenu::on_pushButtonBackstart_clicked()
     MainWindow::mutualUi->status = 0;
     this->close();
 }
-void StartGameMenu::on_pushButtonMulti_clicked()    //多人
+void StartGameMenu::on_pushButtonMulti_clicked()
 {
     //MainWindow::mutualUi->status = 4;
 }
-void StartGameMenu::on_pushButtonSingle_clicked()   //单人->SinglePlayerMenu
+void StartGameMenu::on_pushButtonSingle_clicked()
 {
     MainWindow::mutualUi->status = 2;
     SinglePlayerMenu *new_widget = new SinglePlayerMenu(this);
     new_widget->show();
 }
-void StartGameMenu::on_pushButtonDouble_clicked()   //双人
+void StartGameMenu::on_pushButtonDouble_clicked()
 {
     //MainWindow::mutualUi->status = 3;
 }

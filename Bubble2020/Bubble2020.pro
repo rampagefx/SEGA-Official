@@ -40,6 +40,7 @@ SOURCES += \
 
 HEADERS += \
     doublegame.h \
+    filepath.h \
     helpmenu.h \
         mainwindow.h \
         character.h \
