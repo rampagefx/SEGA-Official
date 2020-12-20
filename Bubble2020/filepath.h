@@ -16,6 +16,7 @@
     static const char *bgm_path = "../../../../music/menu.wav";  // BGM素材文件
     static const char *background_pic_path = "../../../../img/menu.jpeg";  // 主界面背景素材文件
     static const char *game_background = "../../../../img/background.jpg";  // 单人游戏素材文件
+    static const char *draw_pic_path_double = "../../../../img/draw.png";   //双人游戏平局图片
 #elif _WIN64
     static const char *win_pic_path = "../img/win.png";
     static const char *win_pic_path_double_1 = "../img/win_1.png";
@@ -34,5 +35,6 @@
     static const char *background_pic_path = "../img/menu.jpeg";
     static const char *game_background = "../img/background.jpg";
     static const char *game_background_double = "../img/background_double.jpg";
+    static const char *draw_pic_path_double = "../img/draw.png";
 #endif
 #endif // FILEPATH_H

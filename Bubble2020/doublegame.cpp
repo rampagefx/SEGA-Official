@@ -340,31 +340,6 @@ int DoubleGame::explode()
                     if (player[j]->Get_locationx()==x && player[j]->Get_locationy()==y)
                     {
                         player[j]->Set_HP(player[0]->Get_HP()-1);
-                        if (player[j]->Get_HP() <= 0)
-                        {
-                            GameStatus = DEAD;
-                            QImage imaWin;
-                            if(j == 0){
-                                imaWin.load(win_pic_path_double_2);
-                                imaWin.scaled(200,100,Qt::KeepAspectRatio);
-                                LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
-                                LabelPicturePause->setGeometry(150+286,0,500,342);
-                                LabelPicturePause->setScaledContents(true);
-                                LabelPicturePause->raise();
-                                LabelPicturePause->show();
-                                timer->stop();
-                            }
-                            else if(j == 1){
-                                imaWin.load(win_pic_path_double_1);
-                                imaWin.scaled(200,100,Qt::KeepAspectRatio);
-                                LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
-                                LabelPicturePause->setGeometry(150+286,0,500,342);
-                                LabelPicturePause->setScaledContents(true);
-                                LabelPicturePause->raise();
-                                LabelPicturePause->show();
-                                timer->stop();
-                            }
-                        }
                     }
                 }
                 for (int j  =0; j < 5; j++){
@@ -377,6 +352,46 @@ int DoubleGame::explode()
             }
         }
         map[theBomb->GetY()][theBomb->GetX()] = EMPTY;
+    }
+
+    if (player[0]->Get_HP() <= 0 && player[1]->Get_HP() <= 0)       // 平局
+    {
+        GameStatus = DEAD;
+        QImage imaWin;
+        imaWin.load(draw_pic_path_double);
+        imaWin.scaled(200,100,Qt::KeepAspectRatio);
+        LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
+        LabelPicturePause->setGeometry(150+286,0,500,342);
+        LabelPicturePause->setScaledContents(true);
+        LabelPicturePause->raise();
+        LabelPicturePause->show();
+        timer->stop();
+    }
+    else if(player[0]->Get_HP() <= 0)
+    {
+        GameStatus = DEAD;
+        QImage imaWin;
+        imaWin.load(win_pic_path_double_2);
+        imaWin.scaled(200,100,Qt::KeepAspectRatio);
+        LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
+        LabelPicturePause->setGeometry(150+286,0,500,342);
+        LabelPicturePause->setScaledContents(true);
+        LabelPicturePause->raise();
+        LabelPicturePause->show();
+        timer->stop();
+    }
+    else if(player[1]->Get_HP() <= 0)
+    {
+        GameStatus = DEAD;
+        QImage imaWin;
+        imaWin.load(win_pic_path_double_1);
+        imaWin.scaled(200,100,Qt::KeepAspectRatio);
+        LabelPicturePause->setPixmap(QPixmap::fromImage(imaWin));
+        LabelPicturePause->setGeometry(150+286,0,500,342);
+        LabelPicturePause->setScaledContents(true);
+        LabelPicturePause->raise();
+        LabelPicturePause->show();
+        timer->stop();
     }
     return 1;
 }
