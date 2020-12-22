@@ -18,6 +18,8 @@ private:
     int status; // moving status
     int status_counter; // remaining frames before character can move again
 public:
+    int bomb_property=0;
+    int last_move=0;
     QString pic_path, big_pic_path, discription;
     Character(int, int ,int, int ,int);
     virtual ~Character();
@@ -33,7 +35,7 @@ public:
     void Set_locationx(int);
     void Set_locationy(int);
     void Move(int, int**, int, int);
-    virtual void skill() = 0;
+    virtual void skill(int **) = 0;
 };
 
 

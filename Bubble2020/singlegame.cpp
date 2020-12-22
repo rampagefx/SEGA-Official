@@ -10,7 +10,8 @@
 #include "pikachu.h"
 #include "npc.h"
 #include "filepath.h"
-
+#include "misaka.h"
+#include "peco.h"
 using namespace std;
 #define PLAYING 0
 #define DEAD 1
@@ -33,7 +34,9 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     MapLoad(0);
     switch (player_id)
     {
-    case 0: player = new Pikachu(1, 101, 1, 10, 10);
+    case 0: player = new Pikachu(1, 101, 1, 10, 10); break;
+    case 1: player = new Misaka(1, 101, 1, 10, 10); break;
+    case 2: player = new Pecoliimu(1, 101, 1, 10, 10); break;
     //default: this->close();
     }
     // Test img read
@@ -202,28 +205,32 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
     if(event->key()==Qt::Key_W)
     {
         player->Move(0, map, map_size_x, map_size_y);
+        player->last_move = 0;
     }
     else if(event->key()==Qt::Key_A)
     {
         player->Move(2, map, map_size_x, map_size_y);
+        player->last_move = 2;
     }
     else if(event->key()==Qt::Key_D)
     {
         player->Move(3, map, map_size_x, map_size_y);
+        player->last_move = 3;
     }
     else if(event->key()==Qt::Key_S)
     {
         player->Move(1, map, map_size_x, map_size_y);
+        player->last_move = 1;
     }
     else if (event->key()==Qt::Key_Space)
     {
-        PlaceBomb(0, player->Get_locationx(), player->Get_locationy());
+        PlaceBomb(player->bomb_property, player->Get_locationx(), player->Get_locationy());
     }
     else if (event->key()==Qt::Key_Q)
     {
         if (player->CD_time < frame)
         {
-            player->skill();
+            player->skill(map);
             player->CD_time = frame + CD;
         }
     }
@@ -261,18 +268,20 @@ void SingleGame::frame_plus()
                 int y = dy[i]+theBomb->GetY();
                 if (map[y][x] == BRICK || map[y][x] == EMPTY)
                     map[y][x] = EXPLODING;
+                if (map[y][x] == WALL && theBomb->GetDamage() == 2)
+                    map[y][x] = EXPLODING;
             }
         }
     }
     while (bomb_queue.GetHeadTime()<=frame)
         explode();
-    if (frame % 2 == 0)
+    if (frame % 20 == 0)
         for (int i=0;i<5;i++)
             if (enemys[i]->Get_HP()>0){
                 enemys[i]->automove(map);
 
             }
-    if (frame % 10 == 0)
+    if (frame % 50 == 0)
         for (int i=0;i<5;i++)
             if (enemys[i]->Get_HP()>0){
                 // enemys[i]->automove(map);
@@ -297,9 +306,9 @@ int SingleGame::explode()
 {
     while (bomb_queue.GetHeadTime()<=frame){
         bomb* theBomb = bomb_queue.pop()->thebomb;
-        int dx[4] = {-1,0,1,0};
-        int dy[4] = {0,-1,0,1};
-        for (int i=0;i<4;i++){
+        int dx[5] = {-1,0,1,0,0};
+        int dy[5] = {0,-1,0,1,0};
+        for (int i=0;i<5;i++){
             if (isValid(dx[i]+theBomb->GetX(),dy[i]+theBomb->GetY())){
                 int x = dx[i]+theBomb->GetX();
                 int y = dy[i]+theBomb->GetY();

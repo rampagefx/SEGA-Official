@@ -11,6 +11,9 @@ int bomb::GetY(){
 int bomb::GetX(){
     return location_x;
 }
+int bomb::GetDamage(){
+    return damage;
+}
 
 int bomb::Set(int p, int x, int y, int **map){
    property = p;
@@ -24,7 +27,7 @@ int bomb::Set(int p, int x, int y, int **map){
        break;
    case 1:                    // 时间更长的炸弹
        waitingTime = 100;
-       damage = 1;
+       damage = 2;
        break;
    default:
        break;
