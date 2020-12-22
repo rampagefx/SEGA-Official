@@ -7,7 +7,7 @@ class Misaka:public Character
 {
 public:
     Misaka(int, int ,int, int ,int);
-    void skill();
+    void skill(int **);
 };
 
 #endif // MISAKA_H

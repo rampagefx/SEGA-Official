@@ -10,7 +10,8 @@
 #include "pikachu.h"
 #include "npc.h"
 #include "filepath.h"
-
+#include "misaka.h"
+#include "peco.h"
 using namespace std;
 #define PLAYING 0
 #define DEAD 1
@@ -33,7 +34,9 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     MapLoad(0);
     switch (player_id)
     {
-    case 0: player = new Pikachu(1, 101, 1, 10, 10);
+    case 0: player = new Pikachu(1, 101, 1, 10, 10); break;
+    case 1: player = new Misaka(1, 101, 1, 10, 10); break;
+    case 2: player = new Pecoliimu(1, 101, 1, 10, 10); break;
     //default: this->close();
     }
     // Test img read
@@ -202,18 +205,22 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
     if(event->key()==Qt::Key_W)
     {
         player->Move(0, map, map_size_x, map_size_y);
+        player->last_move = 0;
     }
     else if(event->key()==Qt::Key_A)
     {
         player->Move(2, map, map_size_x, map_size_y);
+        player->last_move = 2;
     }
     else if(event->key()==Qt::Key_D)
     {
         player->Move(3, map, map_size_x, map_size_y);
+        player->last_move = 3;
     }
     else if(event->key()==Qt::Key_S)
     {
         player->Move(1, map, map_size_x, map_size_y);
+        player->last_move = 1;
     }
     else if (event->key()==Qt::Key_Space)
     {
@@ -223,7 +230,7 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
     {
         if (player->CD_time < frame)
         {
-            player->skill();
+            player->skill(map);
             player->CD_time = frame + CD;
         }
     }

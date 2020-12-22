@@ -6,14 +6,19 @@ Misaka::Misaka(int HP_in, int id_in, int role_in, int location_x_in, int locatio
 #ifdef __APPLE__
     pic_path = "../../../../img/misaka.png";
     big_pic_path = "../../../../img/misaka_big.png";
-    discription = "双倍血量";
+    discription = "御坂美琴：切换炸弹属性";
 #elif _WIN64
     pic_path = "../img/misaka.png";
     big_pic_path = "../img/misaka_big.png";
+    discription = "御坂美琴：切换炸弹属性";
 #endif
 }
 
-void Misaka::skill()
+void Misaka::skill(int **map)
 {
+    if (bomb_property==0)
+        bomb_property = 1;
+    else if (bomb_property==1)
+        bomb_property = 0;
     return;
 }

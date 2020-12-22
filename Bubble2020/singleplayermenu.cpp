@@ -57,11 +57,22 @@ void SinglePlayerMenu::on_pushButtonDecide_clicked()
     //代表选择人物 1
     if (ui->textCharacter1->isVisible())
     {
-        int character_choose = 1;
         SingleGame *newgame = new SingleGame(0, nullptr);
         newgame->show();
 
     }
+//    else if (ui->textCharacter2->isVisible())
+//    {
+//        SingleGame *newgame = new SingleGame(1, nullptr);
+//        newgame->show();
+
+//    }
+//    else if (ui->textCharacter2->isVisible())
+//    {
+//        SingleGame *newgame = new SingleGame(2, nullptr);
+//        newgame->show();
+
+//    }
 
         //TODO:
 }
