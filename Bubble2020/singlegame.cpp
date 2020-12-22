@@ -76,8 +76,8 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     game_back->show();
     game_back->lower();
     grabKeyboard();
-    QKeyEvent *ev;
-    keyPressEvent(ev);
+    //QKeyEvent *ev;
+    //keyPressEvent(ev);
     HP_show = new QLCDNumber(this);
     HP_show->setGeometry(800, 500, 100, 50);
     CD_display = new QProgressBar(this);
