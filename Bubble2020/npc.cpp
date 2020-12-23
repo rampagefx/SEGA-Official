@@ -16,11 +16,6 @@ bool dfs(int** m, std::vector<int>& path, int x, int y, int target);
 bool visited[N * N + 1]{ false };
 int depth = 0;
 
-int map[N][N]{ {EMPTY, EMPTY, EMPTY, WALL},
-              {BRICK, WALL, BRICK, WALL},
-              {WALL, WALL, EMPTY, EMPTY},
-              {WALL, OUT, EMPTY, EMPTY} };
-
 
 int getPos(int x, int y) {
     if (x < 0 || x >= N || y < 0 || y >= N) {
@@ -181,10 +176,10 @@ void npc::automove(int** map){
     qsrand(time(NULL)+this->Get_id());
     int direction = int(qrand()) % 4;
     Move(direction, map, 20, 20);
-    //Move(nextStep(map, Get_locationx(), Get_locationy()), map, 20, 20);
+//    Move(nextStep(map, Get_locationx(), Get_locationy()), map, 20, 20);
     //qDebug() << map[Get_locationy()][Get_locationx()-1] << map[Get_locationy()-1][Get_locationx()] << map[Get_locationy()+1][Get_locationx()] << map[Get_locationy()][Get_locationx()+1];
 }
 
-void npc::skill(int**){
+void npc::skill(int **map){
 
 }

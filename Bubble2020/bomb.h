@@ -16,6 +16,7 @@ public:
     bomb();
     int GetX();
     int GetY();
+    int GetDamage();
     int Set(int p, int x, int y, int **);
     int GetDamage();
 private:

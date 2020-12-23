@@ -25,7 +25,6 @@ protected:
 private slots:
     void on_pushButtonBGMhelp_clicked();
     void on_pushButtonBackhelp_clicked();
-    void on_pushButtonItem_clicked();
     void on_pushButtonBackground_clicked();
     void on_pushButtonIntro_clicked();
     void on_pushButtonCharacter_clicked();
