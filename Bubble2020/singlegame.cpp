@@ -36,7 +36,7 @@ SingleGame::SingleGame(int player_id, QWidget *parent) : QWidget(parent)
     {
     case 0: player = new Pikachu(1, 101, 1, 10, 10); break;
     case 1: player = new Misaka(1, 101, 1, 10, 10); break;
-    case 2: player = new Pecoliimu(1, 101, 1, 10, 10); break;
+    case 2: player = new Pecoliimu(3, 101, 1, 10, 10); break;
     //default: this->close();
     }
     // Test img read
