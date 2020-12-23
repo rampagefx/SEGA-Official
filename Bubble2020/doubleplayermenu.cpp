@@ -1,6 +1,6 @@
 #include "doubleplayermenu.h"
 #include "ui_doubleplayermenu.h"
-//#include "doublegame.h"
+#include "doublegame.h"
 #include <QDebug>
 
 DoublePlayerMenu::DoublePlayerMenu(QWidget *parent) :
@@ -66,8 +66,8 @@ void DoublePlayerMenu::on_pushButtonNotDecide2_clicked()
 void DoublePlayerMenu::on_pushButtonDecide_clicked()
 {
     int q[2] = {player1_status,player2_status};
-    //DoubleGame *newgame = new DoubleGame(q, nullptr);
-    //newgame->show();
+    DoubleGame *newgame = new DoubleGame(q, nullptr);
+    newgame->show();
 }
 void DoublePlayerMenu::on_pushButtonCharacter1_1_clicked()
 {
