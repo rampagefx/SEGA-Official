@@ -17,6 +17,5 @@ Pecoliimu::Pecoliimu(int HP_in, int id_in, int role_in, int location_x_in, int l
 void Pecoliimu::skill(int **map)
 {
     Set_HP(Get_HP()+1);
-
     return;
 }

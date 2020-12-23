@@ -16,11 +16,6 @@ bool dfs(int** m, std::vector<int>& path, int x, int y, int target);
 bool visited[N * N + 1]{ false };
 int depth = 0;
 
-//int map[N][N]{ {EMPTY, EMPTY, EMPTY, WALL},
-//              {BRICK, WALL, BRICK, WALL},
-//              {WALL, WALL, EMPTY, EMPTY},
-//              {WALL, OUT, EMPTY, EMPTY} };
-
 
 int getPos(int x, int y) {
     if (x < 0 || x >= N || y < 0 || y >= N) {
@@ -188,4 +183,3 @@ void npc::automove(int** map){
 void npc::skill(int **map){
 
 }
-

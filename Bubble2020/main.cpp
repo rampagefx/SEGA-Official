@@ -5,6 +5,8 @@
 // Test include start
 #include <QDebug>
 #include "singlegame.h"
+#include "doublegame.h"
+
 // Test include end
 
 int main(int argc, char *argv[])

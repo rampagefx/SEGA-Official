@@ -18,6 +18,8 @@
     static const char *game_background = "../../../../img/background.jpg";  // 单人游戏素材文件
 #elif _WIN64
     static const char *win_pic_path = "../img/win.png";
+    static const char *win_pic_path_double_1 = "../img/win_1.png";
+    static const char *win_pic_path_double_2 = "../img/win_2.png";
     static const char *lose_pic_path = "../img/lose.png";
     static const char *map_file_path[2] = {"../map1.txt", "../map2.txt"};
     static const char *map_image_path[6] = {"../img/floor.png",
@@ -31,5 +33,7 @@
     static const char *bgm_path = "../music/menu.wav";
     static const char *background_pic_path = "../img/menu.jpeg";
     static const char *game_background = "../img/background.jpg";
+    static const char *game_background_double = "../img/background_double.jpg";
+    static const char *draw_pic_path_double = "../img/draw.png";
 #endif
 #endif // FILEPATH_H

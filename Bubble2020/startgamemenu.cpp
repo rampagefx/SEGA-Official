@@ -2,6 +2,7 @@
 #include "ui_startgamemenu.h"
 #include "singleplayermenu.h"
 #include "doubleplayermenu.h"
+#include "doublegame.h"
 
 StartGameMenu::StartGameMenu(QWidget *parent) :
     QWidget(parent),
