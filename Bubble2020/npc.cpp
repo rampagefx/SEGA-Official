@@ -16,7 +16,6 @@ bool dfs(int** m, std::vector<int>& path, int x, int y, int target);
 bool visited[N * N + 1]{ false };
 int depth = 0;
 
-
 int getPos(int x, int y) {
     if (x < 0 || x >= N || y < 0 || y >= N) {
         return -1;

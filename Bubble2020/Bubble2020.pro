@@ -27,21 +27,31 @@ CONFIG += c++11
 SOURCES += \
     doubleplayermenu.cpp \
         bomb.cpp \
+    gamedisplay.cpp \
     doublegame.cpp \
     helpmenu.cpp \
         main.cpp \
         mainwindow.cpp \
         character.cpp \
     misaka.cpp \
+    multigame.cpp \
+    multimodelclient.cpp \
+    multimodelserver.cpp \
+    multiplayermenu.cpp \
+
     npc.cpp \
     peco.cpp \
         singlegame.cpp \
         bombqueue.cpp \
     pikachu.cpp \
     singleplayermenu.cpp \
+    socketclient.cpp \
+    socketserver.cpp \
     startgamemenu.cpp
 
 HEADERS += \
+    filepath.h \
+    gamedisplay.h \
     doubleplayermenu.h \
     doublegame.h \
     filepath.h \
@@ -49,6 +59,10 @@ HEADERS += \
         mainwindow.h \
         character.h \
     misaka.h \
+    multigame.h \
+    multimodelclient.h \
+    multimodelserver.h \
+    multiplayermenu.h \
     npc.h \
     peco.h \
         singlegame.h \
@@ -57,12 +71,18 @@ HEADERS += \
         bombqueue.h \
     pikachu.h \
     singleplayermenu.h \
+    socketclient.h \
+    socketserver.h \
     startgamemenu.h
 
 FORMS += \
     doubleplayermenu.ui \
     helpmenu.ui \
     mainwindow.ui \
+    multigame.ui \
+    multimodelclient.ui \
+    multimodelserver.ui \
+    multiplayermenu.ui \
     singleplayermenu.ui \
     startgamemenu.ui
 
@@ -72,3 +92,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 QT += multimedia
+
+DISTFILES += \
+    .DS_Store

@@ -32,7 +32,6 @@ private:
     Ui::SingleGame *ui;
     QTimer *timer;
     int frame;
-    int** map;
     int GameStatus;
     Character *player;
     npc *enemys[enemy_num];
@@ -59,6 +58,7 @@ public:
     bool PlaceBomb(int p, int x, int y);
     bool isValid(int x, int y); // out of map or not
     int explode();
+    int** map;
 signals:
     void GameOver();
     void GamePass();
