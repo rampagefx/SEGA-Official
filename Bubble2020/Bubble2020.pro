@@ -41,6 +41,7 @@ SOURCES += \
     startgamemenu.cpp
 
 HEADERS += \
+    doubleplayermenu.h \
     doublegame.h \
     filepath.h \
     helpmenu.h \
@@ -58,6 +59,7 @@ HEADERS += \
     startgamemenu.h
 
 FORMS += \
+    doubleplayermenu.ui \
     helpmenu.ui \
     mainwindow.ui \
     singleplayermenu.ui \

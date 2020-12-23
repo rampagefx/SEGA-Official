@@ -315,7 +315,7 @@ int SingleGame::explode()
                 if (map[y][x] == EXPLODING)
                     map[y][x] = EMPTY;
                 if (player->Get_locationx()==x && player->Get_locationy()==y){
-                    player->Set_HP(player->Get_HP()-1);
+                    player->Set_HP(player->Get_HP()-theBomb->GetDamage());
                     if (player->Get_HP() <= 0)
                     {
                         GameStatus = DEAD;

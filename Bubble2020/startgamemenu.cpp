@@ -1,6 +1,7 @@
 #include "startgamemenu.h"
 #include "ui_startgamemenu.h"
 #include "singleplayermenu.h"
+#include "doubleplayermenu.h"
 #include "doublegame.h"
 
 StartGameMenu::StartGameMenu(QWidget *parent) :
@@ -54,10 +55,9 @@ void StartGameMenu::on_pushButtonSingle_clicked()
 }
 void StartGameMenu::on_pushButtonDouble_clicked()
 {
-    MainWindow::mutualUi->status = 2;
-    int player_id[2] = {0,0};
-    DoubleGame *w = new DoubleGame(player_id, nullptr);
-    w->show();
+    MainWindow::mutualUi->status = 3;
+    DoublePlayerMenu *new_widget = new DoublePlayerMenu(this);
+    new_widget->show();
 }
 void StartGameMenu::paintEvent(QPaintEvent *event)
 {
