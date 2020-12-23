@@ -38,3 +38,7 @@ build*
 
 # MacOS Files
 .DS_Store
+
+# Other Files
+*.zip
+*.rar

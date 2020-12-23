@@ -25,8 +25,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    doubleplayermenu.cpp \
         bomb.cpp \
     gamedisplay.cpp \
+    doublegame.cpp \
     helpmenu.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -36,6 +38,7 @@ SOURCES += \
     multimodelclient.cpp \
     multimodelserver.cpp \
     multiplayermenu.cpp \
+
     npc.cpp \
     peco.cpp \
         singlegame.cpp \
@@ -49,6 +52,9 @@ SOURCES += \
 HEADERS += \
     filepath.h \
     gamedisplay.h \
+    doubleplayermenu.h \
+    doublegame.h \
+    filepath.h \
     helpmenu.h \
         mainwindow.h \
         character.h \
@@ -70,6 +76,7 @@ HEADERS += \
     startgamemenu.h
 
 FORMS += \
+    doubleplayermenu.ui \
     helpmenu.ui \
     mainwindow.ui \
     multigame.ui \
