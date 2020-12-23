@@ -52,7 +52,7 @@ void SocketServer::ServerRecvData()
 void SocketServer::ServerSendData(QString sendMsg)
 {
     char buf[1024]={0};
-    strcpy_s(buf, sendMsg.toStdString().c_str());
+    strcpy(buf, sendMsg.toStdString().c_str());
     int sendFlag = mp_TcpSocket->write(buf, strlen(buf));
     if(sendFlag == -1){
          //QMessageBox::information(this, "联网游戏", "向服务端发送数据失败！");

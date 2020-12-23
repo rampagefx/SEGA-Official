@@ -28,7 +28,7 @@ class SingleGame;
 class SingleGame : public QWidget
 {
     Q_OBJECT
-private:
+public:
     Ui::SingleGame *ui;
     QTimer *timer;
     int frame;

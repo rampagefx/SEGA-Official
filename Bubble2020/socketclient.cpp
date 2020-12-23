@@ -40,7 +40,7 @@ void SocketClient::ClientRecvData()
 void SocketClient::ClientSendData(QString sendMsg)
 {
    char buf[1024]={0};
-   strcpy_s(buf, sendMsg.toStdString().c_str());
+   strcpy(buf, sendMsg.toStdString().c_str());
    int sendFlag = mp_clientSocket->write(buf, strlen(buf));
    if(sendFlag == -1){
         //QMessageBox::information(this, "联网游戏", "向服务端发送数据失败！");

@@ -38,7 +38,6 @@ SOURCES += \
     multimodelclient.cpp \
     multimodelserver.cpp \
     multiplayermenu.cpp \
-
     npc.cpp \
     peco.cpp \
         singlegame.cpp \
