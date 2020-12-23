@@ -5,11 +5,11 @@ Misaka::Misaka(int HP_in, int id_in, int role_in, int location_x_in, int locatio
 {
 #ifdef __APPLE__
     pic_path = "../../../../img/misaka.png";
-    big_pic_path = "../../../../img/misaka_big.png";
+    big_pic_path = "../../../../img/misaka-big.png";
     discription = "御坂美琴：切换炸弹属性";
 #elif _WIN64
     pic_path = "../img/misaka.png";
-    big_pic_path = "../img/misaka_big.png";
+    big_pic_path = "../img/misaka-big.png";
     discription = "御坂美琴：切换炸弹属性";
 #endif
 }
