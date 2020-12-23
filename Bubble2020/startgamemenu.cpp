@@ -1,6 +1,7 @@
 #include "startgamemenu.h"
 #include "ui_startgamemenu.h"
 #include "singleplayermenu.h"
+#include "multiplayermenu.h"
 
 StartGameMenu::StartGameMenu(QWidget *parent) :
     QWidget(parent),
@@ -43,7 +44,9 @@ void StartGameMenu::on_pushButtonBackstart_clicked()
 }
 void StartGameMenu::on_pushButtonMulti_clicked()
 {
-    //MainWindow::mutualUi->status = 4;
+    MainWindow::mutualUi->status = 4;
+    multiplayermenu *new_widget = new multiplayermenu(this);
+    new_widget->show();
 }
 void StartGameMenu::on_pushButtonSingle_clicked()
 {

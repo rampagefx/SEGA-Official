@@ -1,4 +1,5 @@
 #include "character.h"
+// 判断对应的(x, y)是否是一个合法的可移动目的地
 bool moveable(int **map, int x, int y, int length, int width) // map[x][y] is moveable or not
 {
     bool is_moveable = true;
@@ -83,11 +84,12 @@ void Character::Set_locationy(int location)
 
 void Character::Move(int direction, int **map, int length, int width)
 {
+    // 移动人物函数，根据输入的参数direction确定移动的方向
     // 0 for up, 1 for down, 2 for left, 3 for right
     int current_x = location_x;
     int current_y = location_y;
-    if (map[current_y][current_x]!=3)
-        map[current_y][current_x] = 0;
+    if (map[current_y][current_x]!=3 && map[current_y][current_x]!=4) // 如果当前位置不是炸弹，移动后当前位置就变为0
+        map[current_y][current_x] = 0;// 如果当前位置是炸弹，移动后当前位置不发生改变，依然是3代表炸弹
     if (0==direction)
     {
         if(moveable(map, current_x, current_y-1, length, width))
@@ -124,5 +126,6 @@ void Character::Move(int direction, int **map, int length, int width)
     {
         throw "Wrong Direction input for character moving!";
     }
-    map[location_y][location_x] = 100;
+    if (map[location_y][location_x]!=4)
+        map[location_y][location_x] = 100; // 当前位置变为100，标志着当前位置被人物占用了
 }

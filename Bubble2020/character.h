@@ -1,12 +1,13 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
-
+#include <QString>
 #define Player 1
 #define NPC 101
 
 #define moving 1
 #define non_moving 0
-class SingleGame;
+// 人物的基类，所有人物都应该从这个类进行派生
+// 所有的人物都应该由该基类指针指向
 class Character
 {
 private:
@@ -17,8 +18,12 @@ private:
     int status; // moving status
     int status_counter; // remaining frames before character can move again
 public:
+    int bomb_property=0;
+    int last_move=0;
+    QString pic_path, big_pic_path, discription;
     Character(int, int ,int, int ,int);
     virtual ~Character();
+    int CD_time = 200;
     int Get_HP();
     int Get_id();
     int Get_role();
@@ -30,7 +35,7 @@ public:
     void Set_locationx(int);
     void Set_locationy(int);
     void Move(int, int**, int, int);
-    virtual void skill() = 0;
+    virtual void skill(int **) = 0;
 };
 
 
