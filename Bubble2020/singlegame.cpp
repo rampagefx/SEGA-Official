@@ -223,7 +223,7 @@ void SingleGame::keyPressEvent(QKeyEvent *event)
     {
         if (player->CD_time < frame)
         {
-            player->skill();
+            player->skill(map);
             player->CD_time = frame + CD;
         }
     }

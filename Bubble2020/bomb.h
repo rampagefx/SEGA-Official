@@ -17,6 +17,7 @@ public:
     int GetX();
     int GetY();
     int Set(int p, int x, int y, int **);
+    int GetDamage();
 private:
     int waitingTime;            //爆炸时间
     int property;               //种类

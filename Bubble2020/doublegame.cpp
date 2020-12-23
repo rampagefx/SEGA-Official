@@ -10,6 +10,8 @@
 #include "pikachu.h"
 #include "npc.h"
 #include "filepath.h"
+#include "misaka.h"
+#include "peco.h"
 
 using namespace std;
 #define PLAYING 0
@@ -35,12 +37,16 @@ DoubleGame::DoubleGame(int player_id[], QWidget *parent) : QWidget(parent)
     MapLoad(0);
     switch(player_id[0])
     {
-        case 0: player[0] = new Pikachu(1, 1, 1, 2, 10);
+        case 0: player[0] = new Pikachu(1, 1, 1, 2, 10);break;
+        case 1: player[0] = new Misaka(1,1,1,2,10); break;
+        case 2: player[0] = new Pecoliimu(1,1,1,2,10); break;
     }
     map[10][2] = 100;
     switch(player_id[1])
     {
-        case 0: player[1] = new Pikachu(1, 2, 1, 9, 10);
+        case 0: player[1] = new Pikachu(1, 2, 1, 9, 10); break;
+        case 1: player[1] = new Misaka(1,2,1,9,10); break;
+        case 2: player[1] = new Pecoliimu(1,2,1,9,10); break;
     }
     map[10][9] = 100;
     //Test img read
@@ -54,11 +60,11 @@ DoubleGame::DoubleGame(int player_id[], QWidget *parent) : QWidget(parent)
     player_image[1].load(player[1]->big_pic_path);
     player_profile[0] = new QLabel(this);
     player_profile[0]->setPixmap(QPixmap::fromImage(player_image[0]));
-    player_profile[0]->setGeometry(750+286, 50, 200, 200);
+    player_profile[0]->setGeometry(50, 50, 200, 200);
     player_profile[0]->show();
     player_profile[1] = new QLabel(this);
     player_profile[1]->setPixmap(QPixmap::fromImage(player_image[1]));
-    player_profile[1]->setGeometry(50, 50, 200, 200);
+    player_profile[1]->setGeometry(750+286, 50, 200, 200);
     player_profile[1]->show();
     LabelPicturePause=new QLabel(this);
 
@@ -83,7 +89,10 @@ DoubleGame::DoubleGame(int player_id[], QWidget *parent) : QWidget(parent)
     }
     discription[2] = new QLabel(this);
     discription[2]->setGeometry(775+286, 275, 200, 100);
-    discription[2]->setText(player[0]->discription);
+    discription[2]->setText(player[1]->discription);
+    discription[1] = new QLabel(this);
+    discription[1]->setGeometry(50, 275, 200, 100);
+    discription[1]->setText(player[0]->discription);
     background_image.load(game_background_double);
     game_back = new QLabel(this);
     game_back->setGeometry(0, 0, 1286, 730);
@@ -210,51 +219,67 @@ void DoubleGame::keyPressEvent(QKeyEvent *event)
     if(event->key()==Qt::Key_W)
     {
         player[0]->Move(0, map, map_size_x, map_size_y);
+        player[0]->last_move = 0;
     }
     else if(event->key()==Qt::Key_A)
     {
         player[0]->Move(2, map, map_size_x, map_size_y);
+        player[0]->last_move = 2;
     }
     else if(event->key()==Qt::Key_D)
     {
         player[0]->Move(3, map, map_size_x, map_size_y);
+        player[0]->last_move = 3;
     }
     else if(event->key()==Qt::Key_S)
     {
         player[0]->Move(1, map, map_size_x, map_size_y);
+        player[0]->last_move = 1;
     }
     else if (event->key()==Qt::Key_Space)
     {
-        PlaceBomb(0, player[0]->Get_locationx(), player[0]->Get_locationy());
+        PlaceBomb(player[0]->bomb_property, player[0]->Get_locationx(), player[0]->Get_locationy());
     }
     else if (event->key()==Qt::Key_Q)
     {
-        player[0]->skill();
+        if(player[0]->CD_time < frame)
+        {
+              player[0]->skill(map);
+              player[0]->CD_time = frame + CD;
+        }
     }
     //for player 2
     if(event->key()==Qt::Key_I)
     {
         player[1]->Move(0, map, map_size_x, map_size_y);
+        player[1]->last_move = 0;
     }
     else if(event->key()==Qt::Key_J)
     {
         player[1]->Move(2, map, map_size_x, map_size_y);
+        player[1]->last_move = 2;
     }
     else if(event->key()==Qt::Key_L)
     {
         player[1]->Move(3, map, map_size_x, map_size_y);
+        player[1]->last_move = 3;
     }
     else if(event->key()==Qt::Key_K)
     {
         player[1]->Move(1, map, map_size_x, map_size_y);
+        player[1]->last_move = 1;
     }
     else if (event->key()==Qt::Key_P)
     {
-        PlaceBomb(0, player[1]->Get_locationx(), player[1]->Get_locationy());
+        PlaceBomb(player[1]->bomb_property, player[1]->Get_locationx(), player[1]->Get_locationy());
     }
     else if (event->key()==Qt::Key_U)
     {
-        player[1]->skill();
+        if(player[1]->CD_time < frame)
+        {
+              player[1]->skill(map);
+              player[1]->CD_time = frame + CD;
+        }
     }
 }
 bool DoubleGame::PlaceBomb(int p, int x, int y) //放置炸弹
@@ -279,14 +304,16 @@ void DoubleGame::frame_plus()
     if (bomb_queue.GetHeadTime()<=frame+10)
     {
         bomb *theBomb = bomb_queue.Gethead()->thebomb;
-        int dx[4] = {-1,0,1,0};
-        int dy[4] = {0,-1,0,1};
+        int dx[5] = {-1,0,1,0,0};
+        int dy[5] = {0,-1,0,1,0};
         map[theBomb->GetY()][theBomb->GetX()] = EXPLODING;
-        for (int i=0;i<4;i++){
+        for (int i=0;i<5;i++){
             if (isValid(dx[i]+theBomb->GetX(),dy[i]+theBomb->GetY())){
                 int x = dx[i]+theBomb->GetX();
                 int y = dy[i]+theBomb->GetY();
                 if (map[y][x] == BRICK || map[y][x] == EMPTY)
+                    map[y][x] = EXPLODING;
+                if (map[y][x] == WALL && theBomb->GetDamage() == 2)
                     map[y][x] = EXPLODING;
             }
         }
@@ -325,9 +352,9 @@ int DoubleGame::explode()
     while (bomb_queue.GetHeadTime()<=frame)
     {
         bomb* theBomb = bomb_queue.pop()->thebomb;
-        int dx[4] = {-1,0,1,0};
-        int dy[4] = {0,-1,0,1};
-        for (int i = 0; i < 4; i++)
+        int dx[5] = {-1,0,1,0,0};
+        int dy[5] = {0,-1,0,1,0};
+        for (int i = 0; i < 5; i++)
         {
             if(isValid(dx[i]+theBomb->GetX(),dy[i]+theBomb->GetY()))
             {
@@ -339,12 +366,12 @@ int DoubleGame::explode()
                 {
                     if (player[j]->Get_locationx()==x && player[j]->Get_locationy()==y)
                     {
-                        player[j]->Set_HP(player[0]->Get_HP()-1);
+                        player[j]->Set_HP(player[j]->Get_HP()-theBomb->GetDamage());
                     }
                 }
                 for (int j  =0; j < 5; j++){
                     if (enemys[j]->Get_locationx()==x && enemys[j]->Get_locationy()==y){
-                        enemys[j]->Set_HP(enemys[j]->Get_HP()-1);
+                        enemys[j]->Set_HP(enemys[j]->Get_HP()-theBomb->GetDamage());
                         if (enemys[j]->Get_HP() <= 0)
                             map[y][x] = 0;
                     }

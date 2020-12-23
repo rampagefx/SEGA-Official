@@ -31,7 +31,9 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         character.cpp \
+    misaka.cpp \
     npc.cpp \
+    peco.cpp \
         singlegame.cpp \
         bombqueue.cpp \
     pikachu.cpp \
@@ -44,7 +46,9 @@ HEADERS += \
     helpmenu.h \
         mainwindow.h \
         character.h \
+    misaka.h \
     npc.h \
+    peco.h \
         singlegame.h \
         bomb.h \
         mainwindow.h \
