@@ -31,8 +31,14 @@
 *.out
 *.app
 
+# QT Files
+*.user
+build*
+*.autosave
+
+# MacOS Files
+.DS_Store
+
 # Other Files
-*.jpg
-*.png
-*.txt
-*.jpeg
+*.zip
+*.rar
